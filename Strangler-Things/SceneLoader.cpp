@@ -9,35 +9,35 @@
 #include "Invoker.hpp"
 #include "Math.hpp"
 
-#include "GraphicsPopulator.hpp"
+#include "HighWallGraphicsPopulator.hpp"
+#include "LowWallGraphicsPopulator.hpp"
 
 #include <iostream>
 
 using namespace std;
 
-
 GameObject SceneObj;
 
-void CreateHighWall( Vector3Int Coord )
+std::map< Hash, Action< GameObject& > > GraphicsPopulators = 
 {
-	GameObject HighWallObj = GameObject::Instantiate( "HighWall"_N, SceneObj );
-	GraphicsPopulator::I.HighWall( HighWallObj );
-	HighWallObj.GetTransform()->SetLocalPosition( Coord );
-}
+	std::make_pair( "HighWall"_H, Action< GameObject& >( new HighWallGraphicsPopulator(), &HighWallGraphicsPopulator::Populate ) ),
+	std::make_pair( "LowWall"_H, Action< GameObject& >( new LowWallGraphicsPopulator(), &LowWallGraphicsPopulator::Populate ) )
+};
 
-void CreateLowWall( Vector3Int Coord )
+template < Hash _ObjectName >
+void CreateMapObject( Vector3Int a_Coord )
 {
-	GameObject LowWallObj = GameObject::Instantiate( "LowWall"_N, SceneObj );
-	GraphicsPopulator::I.LowWall( LowWallObj );
-	LowWallObj.GetTransform()->SetLocalPosition( Coord );
+	GameObject NewMapObj = GameObject::Instantiate( SceneObj );
+	GraphicsPopulators[ _ObjectName ]( NewMapObj );
+	NewMapObj.GetTransform()->SetLocalPosition( a_Coord );
 }
 
 map< char, Action< Vector3Int > > TileCallbacks =
 {
 	make_pair( ' ', Action< Vector3Int >() ),
 	make_pair( '.', Action< Vector3Int >() ),
-	make_pair( '#', CreateHighWall ),
-	make_pair( '-', CreateHighWall )
+	make_pair( '#', CreateMapObject< "HighWall"_H  > ),
+	make_pair( '-', CreateMapObject< "LowWall"_H > )
 };
 
 string FileToString( const Path& FilePath )
@@ -65,6 +65,12 @@ void LoadScene( const Path& TilemapPath )
 
 	SceneObj = GameObject::Instantiate( "Scene"_N );
 
+	// Create Sun
+	GameObject SunObject = GameObject::Instantiate( "Sun"_N, SceneObj );
+	Light* SunComponent = SunObject.AddComponent< Light >();
+	SunComponent->SetDirection( Math::Normalize( Vector3::Down + Vector3::Right + Vector3::Forward * 0.3f ) );
+	Light::SetSun( SunComponent );
+
 	string Tilemap = FileToString( TilemapPath );
 	stringstream TilemapLines( Tilemap );
 
@@ -76,20 +82,23 @@ void LoadScene( const Path& TilemapPath )
 		string Line;
 		getline( TilemapLines, Line );
 
-		for ( char C : Line )
+		for ( auto Begin = Line.begin(), End = Line.end(); Begin != End; ++Begin, ++X )
 		{
-			if ( C == '\r' )
+			if ( *Begin == '\r' )
+			{
 				continue;
+			}
 
-			auto Iter = TileCallbacks.find( C );
-			_STL_ASSERT(
+			auto Iter = TileCallbacks.find( *Begin );
+			/*_STL_ASSERT(
 				Iter != TileCallbacks.end(),
 				( "Unsupported tile found in tilemap: " + to_string( C ) ).c_str()
-			);
+			);*/
 
-			Iter->second( Vector3Int( X, 0, 20 - Y ) );
-
-			++X;
+			if ( Iter != TileCallbacks.end() )
+			{
+				Iter->second( Vector3Int( X, 0, 20 - Y ) );
+			}
 		}
 
 		++Y;

@@ -5,7 +5,7 @@
 #include "Invoker.hpp"
 
 #include "CameraSystem.hpp"
-#include "GraphicsPopulator.hpp"
+//#include "GraphicsPopulator.hpp"
 #include "SceneLoader.hpp"
 
 
@@ -17,10 +17,13 @@ int main()
 
 	CameraSystem CameraSystem;
 
-	_STL_ASSERT( Directory{}.ContainsFile( "./Resources/Maps/Map.txt" ), "Missing tilemap" );
-	Path TestTilemap( "./Resources/Maps/Map.txt" );
+	Path TilemapLevels[] {
+		Path( "./Resources/Maps/Level1.txt" ),
+		Path( "./Resources/Maps/Level2.txt" ),
+		Path( "./Resources/Maps/Level3.txt" )
+	};
 	
-	LoadScene( TestTilemap );
+	LoadScene( TilemapLevels[ 0 ] );
 
 	Action<> GameLoop = [&]()
 	{
