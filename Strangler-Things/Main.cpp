@@ -9,7 +9,7 @@
 #include "SceneLoader.hpp"
 
 
-int main()
+int main( int argc, char** argv )
 {
 	auto Window = ConsoleWindow::Create( "Strangler Things", { 64, 64 }, { 8, 8 } );
 	ConsoleWindow::MakeContextCurrent( Window );
@@ -23,7 +23,16 @@ int main()
 		Path( "./Resources/Maps/Level3.txt" )
 	};
 	
-	LoadScene( TilemapLevels[ 0 ] );
+	/*
+	Path StartingMap = (argc >= 2) ? Path( argv[1] ) : TilemapLevels[0];
+	*/
+	// TODO: Using a ternary here causes a crash?!
+	Path StartingMap;
+	if (argc >= 2)
+		StartingMap = Path( argv[1] );
+	else StartingMap = TilemapLevels[0];
+	
+	LoadScene( StartingMap );
 
 	Action<> GameLoop = [&]()
 	{

@@ -9,40 +9,65 @@
 #include "Invoker.hpp"
 #include "Math.hpp"
 
+#include "CameraSystem.hpp"
 #include "HighWallGraphicsPopulator.hpp"
 #include "LowWallGraphicsPopulator.hpp"
+#include "PlayerGraphicsPopulator.hpp"
+#include "SceneGraphicsPopulator.hpp"
 
 #include <iostream>
 
 using namespace std;
+
 
 GameObject SceneObj;
 
 std::map< Hash, Action< GameObject& > > GraphicsPopulators = 
 {
 	std::make_pair( "HighWall"_H, Action< GameObject& >( new HighWallGraphicsPopulator(), &HighWallGraphicsPopulator::Populate ) ),
-	std::make_pair( "LowWall"_H, Action< GameObject& >( new LowWallGraphicsPopulator(), &LowWallGraphicsPopulator::Populate ) )
+	std::make_pair( "LowWall"_H, Action< GameObject& >( new LowWallGraphicsPopulator(), &LowWallGraphicsPopulator::Populate ) ),
+	std::make_pair( "Player"_H, Action< GameObject& >( new PlayerGraphicsPopulator(), &PlayerGraphicsPopulator::Populate ) )
 };
 
 template < Hash _ObjectName >
-void CreateMapObject( Vector3Int a_Coord )
+GameObject CreateMapObject( Vector3Int a_Coord )
 {
 	GameObject NewMapObj = GameObject::Instantiate( SceneObj );
-	GraphicsPopulators[ _ObjectName ]( NewMapObj );
+	// TODO: Changing from Local to Global position here causes everything spawned to be located at origin?!?
+	// (Not important for this game, but just a strange bug for the Lengine)
 	NewMapObj.GetTransform()->SetLocalPosition( a_Coord );
+	GraphicsPopulators[ _ObjectName ]( NewMapObj );
+
+	return NewMapObj;
 }
 
-map< char, Action< Vector3Int > > TileCallbacks =
+GameObject CreatePlayer( Vector3Int a_Coord )
 {
-	make_pair( ' ', Action< Vector3Int >() ),
-	make_pair( '.', Action< Vector3Int >() ),
+	GameObject Player = CreateMapObject< "Player"_H >( a_Coord );
+
+	CameraSystem::I()->Follow( Player );
+
+	return Player;
+}
+
+map< char, Invoker< GameObject, Vector3Int > > TileCallbacks =
+{
+	make_pair( ' ', Invoker< GameObject, Vector3Int >() ),
+	make_pair( '.', Invoker< GameObject, Vector3Int >() ),
 	make_pair( '#', CreateMapObject< "HighWall"_H  > ),
-	make_pair( '-', CreateMapObject< "LowWall"_H > )
+	make_pair( '-', CreateMapObject< "LowWall"_H > ),
+	make_pair( 'p', CreatePlayer ),
+	make_pair( '_', Invoker< GameObject, Vector3Int >() ),
+	make_pair( 't', Invoker< GameObject, Vector3Int >() ),
+	make_pair( '?', Invoker< GameObject, Vector3Int >() ),
+	make_pair( 'f', Invoker< GameObject, Vector3Int >() ),
+	make_pair( 'g', Invoker< GameObject, Vector3Int >() ),
+	make_pair( 's', Invoker< GameObject, Vector3Int >() )
 };
 
-string FileToString( const Path& FilePath )
+string FileToString( const Path& a_FilePath )
 {
-	File F = FilePath;
+	File F = a_FilePath;
 	if ( F.Open() )
 	{
 		string S;
@@ -58,20 +83,16 @@ string FileToString( const Path& FilePath )
 	throw exception( "Could not open file" );
 }
 
-void LoadScene( const Path& TilemapPath )
+void LoadScene( const Path& a_TilemapPath )
 {
 	_STL_ASSERT( !SceneObj.IsValid(), "Scene unloading not yet supported" );
-	_STL_ASSERT( TilemapPath.IsFile(), "TilemapPath isn't pointing to a file" );
+	_STL_ASSERT( a_TilemapPath.IsFile(), "TilemapPath isn't pointing to a file" );
 
 	SceneObj = GameObject::Instantiate( "Scene"_N );
 
-	// Create Sun
-	GameObject SunObject = GameObject::Instantiate( "Sun"_N, SceneObj );
-	Light* SunComponent = SunObject.AddComponent< Light >();
-	SunComponent->SetDirection( Math::Normalize( Vector3::Down + Vector3::Right + Vector3::Forward * 0.3f ) );
-	Light::SetSun( SunComponent );
+	SceneGraphicsPopulator().Populate( SceneObj );
 
-	string Tilemap = FileToString( TilemapPath );
+	string Tilemap = FileToString( a_TilemapPath );
 	stringstream TilemapLines( Tilemap );
 
 	int Y = 0;
@@ -90,10 +111,10 @@ void LoadScene( const Path& TilemapPath )
 			}
 
 			auto Iter = TileCallbacks.find( *Begin );
-			/*_STL_ASSERT(
+			_STL_ASSERT(
 				Iter != TileCallbacks.end(),
-				( "Unsupported tile found in tilemap: " + to_string( C ) ).c_str()
-			);*/
+				( "Unsupported tile found in tilemap: " + to_string( *Begin ) + " (" + to_string( X ) + ", " + to_string ( Y ) + ") " ).c_str()
+			);
 
 			if ( Iter != TileCallbacks.end() )
 			{

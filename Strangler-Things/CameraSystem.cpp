@@ -3,8 +3,12 @@
 #include "CameraSystem.hpp"
 
 
+CameraSystem* CameraSystem::s_I;
+
 CameraSystem::CameraSystem()
 {
+	s_I = this;
+
 	m_CameraObj = GameObject::Instantiate( "Camera"_N );
 	Camera* CameraComponent = m_CameraObj.AddComponent< Camera >();
 
@@ -41,4 +45,8 @@ void CameraSystem::Update()
 	if ( Input::IsKeyDown( KeyCode::S ) ) CameraTransform->TranslateLocal( CameraTransform->GetLocalBackward() * Speed * D );
 	if ( Input::IsKeyDown( KeyCode::Q ) ) CameraTransform->TranslateLocal( CameraTransform->GetLocalDown()     * Speed * D );
 	if ( Input::IsKeyDown( KeyCode::E ) ) CameraTransform->TranslateLocal( CameraTransform->GetLocalUp()       * Speed * D );
+}
+
+void CameraSystem::Follow( GameObject a_Obj )
+{
 }

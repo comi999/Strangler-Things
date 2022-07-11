@@ -7,4 +7,4 @@ using namespace std;
 
 class Path;
 
-void LoadScene( const Path& TilemapPath );
+void LoadScene( const Path& a_TilemapPath );
