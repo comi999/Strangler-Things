@@ -9,17 +9,17 @@
 #include "SceneLoader.hpp"
 
 
-int main( int argc, char** argv )
+int main()
 {
-	_STL_ASSERT( argc >= 2, "Missing tilemap path argument" );
-
-	auto Window = ConsoleWindow::Create( "Strangler Things", { 150, 120 }, { 8, 8 } );
+	auto Window = ConsoleWindow::Create( "Strangler Things", { 64, 64 }, { 8, 8 } );
 	ConsoleWindow::MakeContextCurrent( Window );
 	CGE::Init();
 
 	CameraSystem CameraSystem;
 
-	Path TestTilemap = Path( argv[1] );
+	_STL_ASSERT( Directory{}.ContainsFile( "./Resources/Maps/Map.txt" ), "Missing tilemap" );
+	Path TestTilemap( "./Resources/Maps/Map.txt" );
+	
 	LoadScene( TestTilemap );
 
 	Action<> GameLoop = [&]()
