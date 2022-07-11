@@ -1,0 +1,8 @@
+{
+  "Resources": {
+    "Cube": {
+      "Type": "prefab",
+      "Path": "./Cube/cube.obj"
+    }
+  }
+}
