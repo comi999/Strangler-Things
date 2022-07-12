@@ -12,6 +12,9 @@
 #include "CameraSystem.hpp"
 #include "FuelGraphicsPopulator.hpp"
 #include "GameplaySystem.hpp"
+#include "GeneratorComponent.hpp"
+#include "GeneratorFuelComponent.hpp"
+#include "GeneratorGraphicsPopulator.hpp"
 #include "HighWallGraphicsPopulator.hpp"
 #include "LowWallGraphicsPopulator.hpp"
 #include "PickUpAbleComponent.hpp"
@@ -29,7 +32,8 @@ std::map< Hash, Action< GameObject& > > GraphicsPopulators =
 	std::make_pair( "HighWall"_H, Action< GameObject& >( new HighWallGraphicsPopulator(), &HighWallGraphicsPopulator::Populate ) ),
 	std::make_pair( "LowWall"_H, Action< GameObject& >( new LowWallGraphicsPopulator(), &LowWallGraphicsPopulator::Populate ) ),
 	std::make_pair( "Player"_H, Action< GameObject& >( new PlayerGraphicsPopulator(), &PlayerGraphicsPopulator::Populate ) ),
-	std::make_pair( "Fuel"_H, Action< GameObject& >( new FuelGraphicsPopulator(), &FuelGraphicsPopulator::Populate ) )
+	std::make_pair( "Fuel"_H, Action< GameObject& >( new FuelGraphicsPopulator(), &FuelGraphicsPopulator::Populate ) ),
+	std::make_pair( "Generator"_H, Action< GameObject& >( new GeneratorGraphicsPopulator(), &GeneratorGraphicsPopulator::Populate ) )
 };
 
 template < Hash _ObjectName >
@@ -65,8 +69,17 @@ GameObject CreateFuel( Vector3Int a_Coord )
 {
 	GameObject Fuel = CreateMapObject< "Fuel"_H >( a_Coord );
 	Fuel.AddComponent< PickUpAbleComponent >();
+	Fuel.AddComponent< GeneratorFuelComponent >();
 
 	return Fuel;
+}
+
+GameObject CreateGenerator( Vector3Int a_Coord )
+{
+	GameObject Generator = CreateMapObject< "Generator"_H >( a_Coord );
+	Generator.AddComponent< GeneratorComponent >();
+
+	return Generator;
 }
 
 std::map< char, Invoker< GameObject, Vector3Int > > TileCallbacks =
@@ -80,7 +93,7 @@ std::map< char, Invoker< GameObject, Vector3Int > > TileCallbacks =
 	std::make_pair( 't', Invoker< GameObject, Vector3Int >() ),
 	std::make_pair( '?', Invoker< GameObject, Vector3Int >() ),
 	std::make_pair( 'f', CreateFuel ),
-	std::make_pair( 'g', Invoker< GameObject, Vector3Int >() ),
+	std::make_pair( 'g', CreateGenerator ),
 	std::make_pair( 's', Invoker< GameObject, Vector3Int >() )
 };
 
@@ -137,7 +150,9 @@ void LoadScene( const Path& a_TilemapPath )
 
 			if ( Iter != TileCallbacks.end() )
 			{
-				Iter->second( Vector3Int( X, 0, 20 - Y ) );
+				// TODO: We moved the world far away because we need to use local positions to check things (global's not working, returns 0).
+				// If the world was around 0, then a pickup on top of the player (local position about 0) might incorrectly be considered close to a generator.
+				Iter->second( Vector3Int( 120 + X, 0, 140 - Y ) );
 			}
 		}
 

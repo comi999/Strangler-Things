@@ -33,7 +33,7 @@ int main( int argc, char** argv )
 		StartingMap = Path( argv[1] );
 	else StartingMap = TilemapLevels[0];
 	
-	GameplaySystem::StartGameplay( StartingMap );
+	GameplaySystem::StartMatch( StartingMap );
 
 	Action<> GameLoop = [&]()
 	{

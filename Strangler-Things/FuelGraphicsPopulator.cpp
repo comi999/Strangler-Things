@@ -7,7 +7,7 @@ void FuelGraphicsPopulator::Populate( GameObject& a_Object )
 	static Material FuelMaterial = []()
 	{
 		Material Temp = Material::LitFlatColour;
-		Temp.SetName( "PlayerMaterial"_N );
+		Temp.SetName( "FuelMaterial"_N );
 		Temp.SetProperty( "diffuse_colour"_H, ( Vector4 )Colour::LIGHT_ORANGE );
 		Temp.SetShader( Shader::LitFlatColour );
 		return Temp;

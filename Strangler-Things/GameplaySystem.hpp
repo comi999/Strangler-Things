@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include "GeneratorSystem.hpp"
 #include "GridOccupancySystem.hpp"
 #include "PickUpSystem.hpp"
 #include "PlayerMovementSystem.hpp"
@@ -22,7 +23,7 @@ private:
 class GameplaySystem
 {
 public:
-	static void StartGameplay( Path& );
+	static void StartMatch( Path& );
 	static std::weak_ptr< Match > GetMatch()
 	{
 		return std::weak_ptr< Match >( s_I->m_Match );
@@ -36,6 +37,7 @@ private:
 	static GameplaySystem* s_I;
 
 	std::shared_ptr< Match > m_Match;
+	GeneratorSystem m_GeneratorSystem;
 	PickUpSystem m_PickUpSystem;
 	PlayerMovementSystem m_PlayerMovementSystem;
 

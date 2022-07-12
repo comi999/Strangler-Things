@@ -1,16 +1,17 @@
 #include "File.hpp"
 
 #include "GameplaySystem.hpp"
-#include "PlayerMovementSystem.hpp"
 #include "SceneLoader.hpp"
 
 
 GameplaySystem* GameplaySystem::s_I;
 
-void GameplaySystem::StartGameplay( Path& a_TilemapPath )
+void GameplaySystem::StartMatch( Path& a_TilemapPath )
 {
 	s_I->m_Match = std::make_shared< Match >();
 	LoadScene( a_TilemapPath );
+
+	s_I->m_GeneratorSystem.InitForNewMatch();
 
 }
 
@@ -24,6 +25,7 @@ GameplaySystem::GameplaySystem()
 void GameplaySystem::Update()
 {
 	m_PlayerMovementSystem.Update();
+	m_GeneratorSystem.Update();
 	m_PickUpSystem.Update();
 
 }
