@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "GridOccupancySystem.hpp"
+#include "PickUpSystem.hpp"
 #include "PlayerMovementSystem.hpp"
 
 
@@ -35,6 +36,7 @@ private:
 	static GameplaySystem* s_I;
 
 	std::shared_ptr< Match > m_Match;
+	PickUpSystem m_PickUpSystem;
 	PlayerMovementSystem m_PlayerMovementSystem;
 
 };

@@ -24,5 +24,6 @@ GameplaySystem::GameplaySystem()
 void GameplaySystem::Update()
 {
 	m_PlayerMovementSystem.Update();
+	m_PickUpSystem.Update();
 
 }

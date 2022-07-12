@@ -5,4 +5,7 @@
 
 DefineComponent( PlayerComponent, Component )
 {
+public:
+	GameObject PickedUpObject;
+
 };

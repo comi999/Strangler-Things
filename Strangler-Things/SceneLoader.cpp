@@ -10,9 +10,11 @@
 #include "Math.hpp"
 
 #include "CameraSystem.hpp"
+#include "FuelGraphicsPopulator.hpp"
 #include "GameplaySystem.hpp"
 #include "HighWallGraphicsPopulator.hpp"
 #include "LowWallGraphicsPopulator.hpp"
+#include "PickUpAbleComponent.hpp"
 #include "PlayerComponent.hpp"
 #include "PlayerGraphicsPopulator.hpp"
 #include "SceneGraphicsPopulator.hpp"
@@ -26,7 +28,8 @@ std::map< Hash, Action< GameObject& > > GraphicsPopulators =
 {
 	std::make_pair( "HighWall"_H, Action< GameObject& >( new HighWallGraphicsPopulator(), &HighWallGraphicsPopulator::Populate ) ),
 	std::make_pair( "LowWall"_H, Action< GameObject& >( new LowWallGraphicsPopulator(), &LowWallGraphicsPopulator::Populate ) ),
-	std::make_pair( "Player"_H, Action< GameObject& >( new PlayerGraphicsPopulator(), &PlayerGraphicsPopulator::Populate ) )
+	std::make_pair( "Player"_H, Action< GameObject& >( new PlayerGraphicsPopulator(), &PlayerGraphicsPopulator::Populate ) ),
+	std::make_pair( "Fuel"_H, Action< GameObject& >( new FuelGraphicsPopulator(), &FuelGraphicsPopulator::Populate ) )
 };
 
 template < Hash _ObjectName >
@@ -58,6 +61,14 @@ GameObject CreatePlayer( Vector3Int a_Coord )
 	return Player;
 }
 
+GameObject CreateFuel( Vector3Int a_Coord )
+{
+	GameObject Fuel = CreateMapObject< "Fuel"_H >( a_Coord );
+	Fuel.AddComponent< PickUpAbleComponent >();
+
+	return Fuel;
+}
+
 std::map< char, Invoker< GameObject, Vector3Int > > TileCallbacks =
 {
 	std::make_pair( ' ', Invoker< GameObject, Vector3Int >() ),
@@ -68,7 +79,7 @@ std::map< char, Invoker< GameObject, Vector3Int > > TileCallbacks =
 	std::make_pair( '_', Invoker< GameObject, Vector3Int >() ),
 	std::make_pair( 't', Invoker< GameObject, Vector3Int >() ),
 	std::make_pair( '?', Invoker< GameObject, Vector3Int >() ),
-	std::make_pair( 'f', Invoker< GameObject, Vector3Int >() ),
+	std::make_pair( 'f', CreateFuel ),
 	std::make_pair( 'g', Invoker< GameObject, Vector3Int >() ),
 	std::make_pair( 's', Invoker< GameObject, Vector3Int >() )
 };
