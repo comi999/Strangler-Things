@@ -49,7 +49,7 @@ void GeneratorSystem::Update()
 			{
 				// TODO: Delete the fuel game object properly
 				GameObject* FuelObj = Fuel->GetOwner();
-				Fuel->DestroyComponent< GeneratorFuelComponent >( *FuelObj );
+				FuelObj->DestroyComponent< GeneratorFuelComponent >();
 				FuelTfm->SetGlobalPosition( Vector3( -100.0f, -100.0f, -100.0f ) );
 				FuelTfm->SetLocalScale( Vector3::Zero );
 
