@@ -1,6 +1,7 @@
 #include "SceneGraphicsPopulator.hpp"
 #include "Resource.hpp"
 
+
 void SceneGraphicsPopulator::Populate( GameObject& a_Object )
 {
 	// Create Sun

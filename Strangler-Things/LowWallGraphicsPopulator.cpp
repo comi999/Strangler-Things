@@ -1,6 +1,7 @@
 #include "LowWallGraphicsPopulator.hpp"
 #include "Resource.hpp"
 
+
 void LowWallGraphicsPopulator::Populate( GameObject& a_Object )
 {
 	static Material LowWallMaterial = []()

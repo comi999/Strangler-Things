@@ -2,8 +2,6 @@
 
 #include "Invoker.hpp"
 
-using namespace std;
-
 
 class Path;
 

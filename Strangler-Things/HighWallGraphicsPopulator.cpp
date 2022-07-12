@@ -1,5 +1,6 @@
 #include "HighWallGraphicsPopulator.hpp"
 
+
 void HighWallGraphicsPopulator::Populate( GameObject& a_Object )
 {
 	static Material HighWallMaterial = []()

@@ -10,6 +10,7 @@
 #include "Math.hpp"
 
 #include "CameraSystem.hpp"
+#include "GameplaySystem.hpp"
 #include "HighWallGraphicsPopulator.hpp"
 #include "LowWallGraphicsPopulator.hpp"
 #include "PlayerComponent.hpp"
@@ -17,8 +18,6 @@
 #include "SceneGraphicsPopulator.hpp"
 
 #include <iostream>
-
-using namespace std;
 
 
 GameObject SceneObj;
@@ -42,6 +41,13 @@ GameObject CreateMapObject( Vector3Int a_Coord )
 	return NewMapObj;
 }
 
+template < Hash _ObjectName >
+GameObject CreateMapObjectWithGridOccupancy( Vector3Int a_Coord )
+{
+	GameplaySystem::GetMatch().lock()->GetGridOccupancySystem().RegisterOccupied( a_Coord );
+	return CreateMapObject< _ObjectName >( a_Coord );
+}
+
 GameObject CreatePlayer( Vector3Int a_Coord )
 {
 	GameObject Player = CreateMapObject< "Player"_H >( a_Coord );
@@ -52,27 +58,27 @@ GameObject CreatePlayer( Vector3Int a_Coord )
 	return Player;
 }
 
-map< char, Invoker< GameObject, Vector3Int > > TileCallbacks =
+std::map< char, Invoker< GameObject, Vector3Int > > TileCallbacks =
 {
-	make_pair( ' ', Invoker< GameObject, Vector3Int >() ),
-	make_pair( '.', Invoker< GameObject, Vector3Int >() ),
-	make_pair( '#', CreateMapObject< "HighWall"_H  > ),
-	make_pair( '-', CreateMapObject< "LowWall"_H > ),
-	make_pair( 'p', CreatePlayer ),
-	make_pair( '_', Invoker< GameObject, Vector3Int >() ),
-	make_pair( 't', Invoker< GameObject, Vector3Int >() ),
-	make_pair( '?', Invoker< GameObject, Vector3Int >() ),
-	make_pair( 'f', Invoker< GameObject, Vector3Int >() ),
-	make_pair( 'g', Invoker< GameObject, Vector3Int >() ),
-	make_pair( 's', Invoker< GameObject, Vector3Int >() )
+	std::make_pair( ' ', Invoker< GameObject, Vector3Int >() ),
+	std::make_pair( '.', Invoker< GameObject, Vector3Int >() ),
+	std::make_pair( '#', CreateMapObjectWithGridOccupancy< "HighWall"_H  > ),
+	std::make_pair( '-', CreateMapObjectWithGridOccupancy< "LowWall"_H > ),
+	std::make_pair( 'p', CreatePlayer ),
+	std::make_pair( '_', Invoker< GameObject, Vector3Int >() ),
+	std::make_pair( 't', Invoker< GameObject, Vector3Int >() ),
+	std::make_pair( '?', Invoker< GameObject, Vector3Int >() ),
+	std::make_pair( 'f', Invoker< GameObject, Vector3Int >() ),
+	std::make_pair( 'g', Invoker< GameObject, Vector3Int >() ),
+	std::make_pair( 's', Invoker< GameObject, Vector3Int >() )
 };
 
-string FileToString( const Path& a_FilePath )
+std::string FileToString( const Path& a_FilePath )
 {
 	File F = a_FilePath;
 	if ( F.Open() )
 	{
-		string S;
+		std::string S;
 		S.resize( F.Size() );
 		F.Read( S.data(), S.size() );
 
@@ -82,7 +88,7 @@ string FileToString( const Path& a_FilePath )
 		return S;
 	}
 
-	throw exception( "Could not open file" );
+	throw std::exception( "Could not open file" );
 }
 
 void LoadScene( const Path& a_TilemapPath )
@@ -94,16 +100,16 @@ void LoadScene( const Path& a_TilemapPath )
 
 	SceneGraphicsPopulator().Populate( SceneObj );
 
-	string Tilemap = FileToString( a_TilemapPath );
-	stringstream TilemapLines( Tilemap );
+	std::string Tilemap = FileToString( a_TilemapPath );
+	std::stringstream TilemapLines( Tilemap );
 
 	int Y = 0;
 	while ( !TilemapLines.eof() )
 	{
 		int X = 0;
 
-		string Line;
-		getline( TilemapLines, Line );
+		std::string Line;
+		std::getline( TilemapLines, Line );
 
 		for ( auto Begin = Line.begin(), End = Line.end(); Begin != End; ++Begin, ++X )
 		{
@@ -115,7 +121,7 @@ void LoadScene( const Path& a_TilemapPath )
 			auto Iter = TileCallbacks.find( *Begin );
 			_STL_ASSERT(
 				Iter != TileCallbacks.end(),
-				( "Unsupported tile found in tilemap: " + to_string( *Begin ) + " (" + to_string( X ) + ", " + to_string ( Y ) + ") " ).c_str()
+				( "Unsupported tile found in tilemap: " + std::to_string( *Begin ) + " (" + std::to_string( X ) + ", " + std::to_string ( Y ) + ") " ).c_str()
 			);
 
 			if ( Iter != TileCallbacks.end() )

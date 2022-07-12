@@ -1,6 +1,7 @@
 #include "PlayerGraphicsPopulator.hpp"
 #include "Resource.hpp"
 
+
 void PlayerGraphicsPopulator::Populate( GameObject& a_Object )
 {
 	static Material PlayerMaterial = []()

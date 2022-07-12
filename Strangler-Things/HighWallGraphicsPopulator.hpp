@@ -2,6 +2,7 @@
 
 #include "IGraphicsPopulator.hpp"
 
+
 class HighWallGraphicsPopulator : public IGraphicsPopulator
 {
 public:
