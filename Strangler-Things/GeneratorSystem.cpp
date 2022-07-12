@@ -13,6 +13,7 @@ void GeneratorSystem::InitForNewMatch()
 	m_FuelRequired = Fuels.size();
 	m_FuelConsumed = 0;
 
+	OnFuelConsumptionChanged.InvokeAll();
 }
 
 void GeneratorSystem::Update()
@@ -58,8 +59,10 @@ void GeneratorSystem::Update()
 		}
 	}
 
-	if ( m_FuelConsumed == m_FuelRequired )
-	{
-		_STL_ASSERT( false, "YOU WIN!" );
-	}
+	OnFuelConsumptionChanged.InvokeAll();
+}
+
+bool GeneratorSystem::IsFullyFueled()
+{
+	return m_FuelConsumed >= m_FuelRequired;
 }

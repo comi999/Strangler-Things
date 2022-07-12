@@ -33,13 +33,11 @@ class GridOccupancySystem
 public:
 	void RegisterOccupied( Vector3Int a_Coord )
 	{
-		_STL_ASSERT( m_OccupiedCoords.find( a_Coord ) == m_OccupiedCoords.end(), "Double-registering occupied coord!" );
 		m_OccupiedCoords.insert( a_Coord );
 	}
 
 	void DeregisterOccupied( Vector3Int a_Coord )
 	{
-		_STL_ASSERT( m_OccupiedCoords.find( a_Coord ) != m_OccupiedCoords.end(), "Deregistering non-occupied!" );
 		m_OccupiedCoords.erase( a_Coord );
 	}
 

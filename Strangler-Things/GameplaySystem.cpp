@@ -4,7 +4,10 @@
 #include "SceneLoader.hpp"
 
 
-GameplaySystem* GameplaySystem::s_I;
+void HandleFuelConsumptionChanged()
+{
+	GameplaySystem::OnExitStatusChanged();
+}
 
 void GameplaySystem::StartMatch( Path& a_TilemapPath )
 {
@@ -19,6 +22,8 @@ GameplaySystem::GameplaySystem()
 {
 	s_I = this;
 	m_Match = nullptr;
+
+	m_GeneratorSystem.OnFuelConsumptionChanged += HandleFuelConsumptionChanged;
 
 }
 

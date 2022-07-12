@@ -16,6 +16,7 @@
 #include "GeneratorFuelComponent.hpp"
 #include "GeneratorGraphicsPopulator.hpp"
 #include "HighWallGraphicsPopulator.hpp"
+#include "HorizontalExitGraphicsPopulator.hpp"
 #include "LowWallGraphicsPopulator.hpp"
 #include "PickUpAbleComponent.hpp"
 #include "PlayerComponent.hpp"
@@ -32,6 +33,7 @@ std::map< Hash, Action< GameObject& > > GraphicsPopulators =
 	std::make_pair( "HighWall"_H, Action< GameObject& >( new HighWallGraphicsPopulator(), &HighWallGraphicsPopulator::Populate ) ),
 	std::make_pair( "LowWall"_H, Action< GameObject& >( new LowWallGraphicsPopulator(), &LowWallGraphicsPopulator::Populate ) ),
 	std::make_pair( "Player"_H, Action< GameObject& >( new PlayerGraphicsPopulator(), &PlayerGraphicsPopulator::Populate ) ),
+	std::make_pair( "HorizontalExit"_H, Action< GameObject& >( new HorizontalExitGraphicsPopulator(), &HorizontalExitGraphicsPopulator::Populate ) ),
 	std::make_pair( "Fuel"_H, Action< GameObject& >( new FuelGraphicsPopulator(), &FuelGraphicsPopulator::Populate ) ),
 	std::make_pair( "Generator"_H, Action< GameObject& >( new GeneratorGraphicsPopulator(), &GeneratorGraphicsPopulator::Populate ) )
 };
@@ -65,6 +67,13 @@ GameObject CreatePlayer( Vector3Int a_Coord )
 	return Player;
 }
 
+GameObject CreateHorizontalExit( Vector3Int a_Coord )
+{
+	GameObject Exit = CreateMapObject< "HorizontalExit"_H >( a_Coord );
+
+	return Exit;
+}
+
 GameObject CreateFuel( Vector3Int a_Coord )
 {
 	GameObject Fuel = CreateMapObject< "Fuel"_H >( a_Coord );
@@ -89,7 +98,7 @@ std::map< char, Invoker< GameObject, Vector3Int > > TileCallbacks =
 	std::make_pair( '#', CreateMapObjectWithGridOccupancy< "HighWall"_H  > ),
 	std::make_pair( '-', CreateMapObjectWithGridOccupancy< "LowWall"_H > ),
 	std::make_pair( 'p', CreatePlayer ),
-	std::make_pair( '_', Invoker< GameObject, Vector3Int >() ),
+	std::make_pair( '_', CreateHorizontalExit ),
 	std::make_pair( 't', Invoker< GameObject, Vector3Int >() ),
 	std::make_pair( '?', Invoker< GameObject, Vector3Int >() ),
 	std::make_pair( 'f', CreateFuel ),
