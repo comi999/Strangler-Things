@@ -12,6 +12,7 @@
 #include "CameraSystem.hpp"
 #include "HighWallGraphicsPopulator.hpp"
 #include "LowWallGraphicsPopulator.hpp"
+#include "PlayerComponent.hpp"
 #include "PlayerGraphicsPopulator.hpp"
 #include "SceneGraphicsPopulator.hpp"
 
@@ -44,8 +45,9 @@ GameObject CreateMapObject( Vector3Int a_Coord )
 GameObject CreatePlayer( Vector3Int a_Coord )
 {
 	GameObject Player = CreateMapObject< "Player"_H >( a_Coord );
+	Player.AddComponent< PlayerComponent >();
 
-	CameraSystem::I()->Follow( Player );
+	CameraSystem::Follow( Player );
 
 	return Player;
 }

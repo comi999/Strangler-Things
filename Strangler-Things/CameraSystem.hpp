@@ -7,17 +7,18 @@
 class CameraSystem
 {
 public:
-	static CameraSystem* I() { return s_I; }
+	static void Follow( GameObject );
 
 	CameraSystem();
 
 	void Update();
-	void Follow( GameObject );
 
 private:
 	static CameraSystem* s_I;
 
 	GameObject m_CameraObj;
 	Vector2 m_CameraRotation;
+	GameObject m_Target;
+	Vector3 m_TargetPoint;
 
 };

@@ -3,7 +3,7 @@
 #include "CameraSystem.hpp"
 
 
-CameraSystem* CameraSystem::s_I;
+CameraSystem* CameraSystem::s_I = nullptr;
 
 CameraSystem::CameraSystem()
 {
@@ -12,6 +12,8 @@ CameraSystem::CameraSystem()
 	m_CameraObj = GameObject::Instantiate( "Camera"_N );
 	Camera* CameraComponent = m_CameraObj.AddComponent< Camera >();
 
+	m_CameraObj.GetTransform()->SetLocalRotation( Quaternion::ToQuaternion( Vector3( Math::Radians( -50.0f ), 0.0f, 0.0f ) ) );
+
 	ConsoleWindow* Window = ConsoleWindow::GetCurrentContext();
 	CameraComponent->SetAspect( (float)Window->GetWidth() / Window->GetHeight() );
 
@@ -19,34 +21,27 @@ CameraSystem::CameraSystem()
 	CameraComponent->SetNearZ( 0.1f );
 	CameraComponent->SetFarZ( 100.0f );
 	Camera::SetMainCamera( CameraComponent );
-	m_CameraObj.GetTransform()->SetLocalPosition( Vector3( 0.0f, 2.0f, 16.0f ) );
 
 	m_CameraRotation = Vector2::Zero;
+	m_TargetPoint = Vector3::Zero;
 }
 
 void CameraSystem::Update()
 {
-	Transform* CameraTransform = m_CameraObj.GetTransform();
-	float D = Time::GetRealDeltaTime();
-	float Speed = 1;
+	static Vector3 Offset = Vector3( 0.0f, 8.0f, -3.0f );
 
-	if ( Input::IsKeyDown( KeyCode::Left  ) ) m_CameraRotation.y += Speed * D;
-	if ( Input::IsKeyDown( KeyCode::Right ) ) m_CameraRotation.y -= Speed * D;
-	if ( Input::IsKeyDown( KeyCode::Up    ) ) m_CameraRotation.x += Speed * D;
-	if ( Input::IsKeyDown( KeyCode::Down  ) ) m_CameraRotation.x -= Speed * D;
+	if (m_Target.IsValid())
+	{
+		m_TargetPoint = m_Target.GetTransform()->GetGlobalPosition();
+	}
 
-	m_CameraRotation.x = Math::Clamp( m_CameraRotation.x, -Math::Radians( 89.9f ), Math::Radians( 89.9f ) );
-
-	CameraTransform->SetLocalRotation( Quaternion::ToQuaternion( Vector3( m_CameraRotation, 0.0f ) ) );
-
-	if ( Input::IsKeyDown( KeyCode::A ) ) CameraTransform->TranslateLocal( CameraTransform->GetLocalLeft()     * Speed * D );
-	if ( Input::IsKeyDown( KeyCode::D ) ) CameraTransform->TranslateLocal( CameraTransform->GetLocalRight()    * Speed * D );
-	if ( Input::IsKeyDown( KeyCode::W ) ) CameraTransform->TranslateLocal( CameraTransform->GetLocalForward()  * Speed * D );
-	if ( Input::IsKeyDown( KeyCode::S ) ) CameraTransform->TranslateLocal( CameraTransform->GetLocalBackward() * Speed * D );
-	if ( Input::IsKeyDown( KeyCode::Q ) ) CameraTransform->TranslateLocal( CameraTransform->GetLocalDown()     * Speed * D );
-	if ( Input::IsKeyDown( KeyCode::E ) ) CameraTransform->TranslateLocal( CameraTransform->GetLocalUp()       * Speed * D );
+	m_CameraObj.GetTransform()->SetLocalPosition( m_TargetPoint + Offset );
 }
 
 void CameraSystem::Follow( GameObject a_Obj )
 {
+	_STL_ASSERT( s_I != nullptr, "" );
+	s_I->m_Target = a_Obj;
+	s_I->m_TargetPoint = a_Obj.GetTransform()->GetGlobalPosition();
+
 }

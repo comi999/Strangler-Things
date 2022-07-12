@@ -5,17 +5,18 @@
 #include "Invoker.hpp"
 
 #include "CameraSystem.hpp"
-//#include "GraphicsPopulator.hpp"
+#include "GameplaySystem.hpp"
 #include "SceneLoader.hpp"
 
 
 int main( int argc, char** argv )
 {
-	auto Window = ConsoleWindow::Create( "Strangler Things", { 64, 64 }, { 8, 8 } );
+	auto Window = ConsoleWindow::Create( "Strangler Things", { 128, 96 }, { 8, 8 } );
 	ConsoleWindow::MakeContextCurrent( Window );
 	CGE::Init();
 
 	CameraSystem CameraSystem;
+	GameplaySystem GameplaySystem{};
 
 	Path TilemapLevels[] {
 		Path( "./Resources/Maps/Level1.txt" ),
@@ -36,6 +37,7 @@ int main( int argc, char** argv )
 
 	Action<> GameLoop = [&]()
 	{
+		GameplaySystem.Update();
 		CameraSystem.Update();
 	};
 
