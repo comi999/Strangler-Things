@@ -4,7 +4,7 @@
 
 void GeneratorGraphicsPopulator::Populate( GameObject& a_Object )
 {
-	static Material GeneratorMaterial = []()
+	static ResourceHandle< Material > GeneratorMaterial = []()
 	{
 		Material Temp = Material::LitFlatColour;
 		Temp.SetName( "GeneratorMaterial"_N );

@@ -4,7 +4,7 @@
 
 void FuelGraphicsPopulator::Populate( GameObject& a_Object )
 {
-	static Material FuelMaterial = []()
+	static ResourceHandle< Material > FuelMaterial = []()
 	{
 		Material Temp = Material::LitFlatColour;
 		Temp.SetName( "FuelMaterial"_N );

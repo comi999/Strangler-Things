@@ -8,10 +8,10 @@
 
 GameObject CreateExitCube( GameObject& a_Parent )
 {
-	static Material ExitMaterial = []()
+	static ResourceHandle< Material > ExitMaterial = []()
 	{
 		Material Temp = Material::LitFlatColour;
-		Temp.SetName( "LowWallMaterial"_N );
+		Temp.SetName( "ExitMaterial"_N );
 		Temp.SetProperty( "diffuse_colour"_H, ( Vector4 )Colour::BLUE );
 		Temp.SetShader( Shader::LitFlatColour );
 		return Temp;

@@ -4,7 +4,7 @@
 
 void LowWallGraphicsPopulator::Populate( GameObject& a_Object )
 {
-	static Material LowWallMaterial = []()
+	static ResourceHandle< Material > LowWallMaterial = []()
 	{
 		Material Temp = Material::LitFlatColour;
 		Temp.SetName( "LowWallMaterial"_N );

@@ -3,7 +3,7 @@
 
 void HighWallGraphicsPopulator::Populate( GameObject& a_Object )
 {
-	static Material HighWallMaterial = []()
+	static ResourceHandle< Material > HighWallMaterial = []()
 	{
 		Material Temp = Material::LitFlatColour;
 		Temp.SetName( "HighWallMaterial"_N );

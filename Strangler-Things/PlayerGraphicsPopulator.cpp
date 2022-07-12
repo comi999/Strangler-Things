@@ -4,7 +4,7 @@
 
 void PlayerGraphicsPopulator::Populate( GameObject& a_Object )
 {
-	static Material PlayerMaterial = []()
+	static ResourceHandle< Material > PlayerMaterial = []()
 	{
 		Material Temp = Material::LitFlatColour;
 		Temp.SetName( "PlayerMaterial"_N );
