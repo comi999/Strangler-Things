@@ -3,6 +3,42 @@
     "cube": {
       "Type": "prefab",
       "Path": "./Cube/cube.obj"
+    },
+    "buzz": {
+      "Type": "sfxrclip",
+      "Path": "Sfx/buzz.sfs"
+    },
+    "door": {
+      "Type": "sfxrclip",
+      "Path": "Sfx/door.sfs"
+    },
+    "drop": {
+      "Type": "sfxrclip",
+      "Path": "Sfx/drop.sfs"
+    },
+    "footstep": {
+      "Type": "sfxrclip",
+      "Path": "Sfx/footstep.sfs"
+    },
+    "pickup": {
+      "Type": "sfxrclip",
+      "Path": "Sfx/pickup.sfs"
+    },
+    "powerup": {
+      "Type": "sfxrclip",
+      "Path": "Sfx/powerup.sfs"
+    },
+    "siren_intense": {
+      "Type": "sfxrclip",
+      "Path": "Sfx/siren_intense.sfs"
+    },
+    "siren_nostromo": {
+      "Type": "sfxrclip",
+      "Path": "Sfx/siren_nostromo.sfs"
+    },
+    "siren_warning": {
+      "Type": "sfxrclip",
+      "Path": "Sfx/siren_warning.sfs"
     }
   }
 }

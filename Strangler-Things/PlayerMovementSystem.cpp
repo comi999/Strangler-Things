@@ -3,6 +3,7 @@
 #include "GameplaySystem.hpp"
 #include "PlayerComponent.hpp"
 #include "PlayerMovementSystem.hpp"
+#include "AudioSource.hpp"
 
 
 void PlayerMovementSystem::Update()
@@ -16,6 +17,7 @@ void PlayerMovementSystem::Update()
 	for ( auto Player : Component::GetComponents< PlayerComponent >() )
 	{
 		auto Transform = Player->GetOwner()->GetTransform();
+		auto* Audio = Player->GetOwner()->GetComponent<AudioSource>();
 		auto Offset = Vector3::Zero;
 		Vector3 CurrentPosition = Transform->GetLocalPosition();
 		
@@ -57,7 +59,21 @@ void PlayerMovementSystem::Update()
 			!Grid.CoordIsOccupied( CurrentPosition + Vector3::Backward * CollisionSize )
 		) Offset.z -= Speed * D;
 
-		if ( Offset != Vector3::Zero )
-			Transform->TranslateLocal( Offset );
+		if (Offset != Vector3::Zero)
+		{
+			if (Audio && !Audio->IsPlaying())
+			{
+				Audio->Play();
+				Audio->SetLooping(true);
+			}
+			Transform->TranslateLocal(Offset);
+		}
+		else
+		{
+			if (Audio && Audio->IsPlaying())
+			{
+				Audio->Stop();
+			}
+		}
 	}
 }

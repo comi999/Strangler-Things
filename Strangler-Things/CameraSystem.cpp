@@ -1,5 +1,6 @@
 #include "CGE.hpp"
 
+#include "AudioListener.hpp"
 #include "CameraSystem.hpp"
 
 
@@ -11,6 +12,7 @@ CameraSystem::CameraSystem()
 
 	m_CameraObj = GameObject::Instantiate( "Camera"_N );
 	Camera* CameraComponent = m_CameraObj.AddComponent< Camera >();
+	m_CameraObj.AddComponent< AudioListener >();
 
 	m_CameraObj.GetTransform()->SetLocalRotation( Quaternion::ToQuaternion( Vector3( Math::Radians( -50.0f ), 0.0f, 0.0f ) ) );
 

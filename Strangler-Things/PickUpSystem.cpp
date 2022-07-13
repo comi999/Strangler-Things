@@ -1,5 +1,6 @@
 #include "CGE.hpp"
 
+#include "AudioSource.hpp"
 #include "PickUpAbleComponent.hpp"
 #include "PickUpSystem.hpp"
 #include "PlayerComponent.hpp"
@@ -27,6 +28,11 @@ void PickUpSystem::Update()
 		if ( Player->PickedUpObject.IsValid() )
 		{
 			Transform* PUTransform = Player->PickedUpObject.GetTransform();
+			auto* Audio = PUTransform->GetOwner()->GetComponent<AudioSource>();
+			auto PUSound = Resource::Load< SfxrClip >("drop"_H);
+			Audio->LoadSfx(PUSound);
+			Audio->SetRolloffFactor(0.1f);
+			Audio->Play();
 
 			PUTransform->SetParent( PlayerTfm->GetParent() );
 			PUTransform->SetLocalPosition( PlayerTfm->GetLocalPosition() );
@@ -48,6 +54,12 @@ void PickUpSystem::Update()
 
 				if ( Math::DistanceSqrd( PlayerPos, PUTransform->GetGlobalPosition() ) <= MaxPickUpDistanceSq )
 				{
+					auto* Audio = PUTransform->GetOwner()->GetComponent<AudioSource>();
+					auto PUSound = Resource::Load< SfxrClip >("pickup"_H);
+					Audio->LoadSfx(PUSound);
+					Audio->SetRolloffFactor(0.1f);
+					Audio->Play();
+
 					PUTransform->SetParent( PlayerTfm );
 					PUTransform->SetLocalPosition( Vector3( 0.0f, PickUpOverheadHeight, 0.0f ) );
 

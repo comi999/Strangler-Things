@@ -8,6 +8,7 @@
 #include "GameObject.hpp"
 #include "Invoker.hpp"
 #include "Math.hpp"
+#include "AudioSource.hpp"
 
 #include "CameraSystem.hpp"
 #include "FuelGraphicsPopulator.hpp"
@@ -65,6 +66,10 @@ GameObject CreatePlayer( Vector3Int a_Coord )
 {
 	GameObject Player = CreateMapObject< "Player"_H >( a_Coord );
 	Player.AddComponent< PlayerComponent >();
+	auto* audioSource = Player.AddComponent< AudioSource >();
+	auto footstepSfx = Resource::Load< SfxrClip >("footstep"_H);
+	audioSource->LoadSfx(footstepSfx);
+	audioSource->SetRolloffFactor(0.1f);
 
 	CameraSystem::Follow( Player );
 
@@ -74,6 +79,7 @@ GameObject CreatePlayer( Vector3Int a_Coord )
 GameObject CreateHorizontalExit( Vector3Int a_Coord )
 {
 	GameObject Exit = CreateMapObject< "HorizontalExit"_H >( a_Coord );
+	Exit.AddComponent< AudioSource >();
 
 	return Exit;
 }
@@ -83,6 +89,7 @@ GameObject CreateFuel( Vector3Int a_Coord )
 	GameObject Fuel = CreateMapObject< "Fuel"_H >( a_Coord );
 	Fuel.AddComponent< PickUpAbleComponent >();
 	Fuel.AddComponent< GeneratorFuelComponent >();
+	Fuel.AddComponent< AudioSource >();
 
 	return Fuel;
 }
@@ -91,6 +98,7 @@ GameObject CreateGenerator( Vector3Int a_Coord )
 {
 	GameObject Generator = CreateMapObject< "Generator"_H >( a_Coord );
 	Generator.AddComponent< GeneratorComponent >();
+	Generator.AddComponent< AudioSource >();
 
 	return Generator;
 }
