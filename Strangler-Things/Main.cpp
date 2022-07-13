@@ -24,10 +24,6 @@ int main( int argc, char** argv )
 		Path( "./Resources/Maps/Level3.txt" )
 	};
 	
-	/*
-	Path StartingMap = (argc >= 2) ? Path( argv[1] ) : TilemapLevels[0];
-	*/
-	// TODO: Using a ternary here causes a crash?!
 	Path StartingMap;
 	if (argc >= 2)
 		StartingMap = Path( argv[1] );

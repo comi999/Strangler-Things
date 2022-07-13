@@ -19,6 +19,6 @@ void FuelGraphicsPopulator::Populate( GameObject& a_Object )
 	NewRenderer->SetMaterial( FuelMaterial );
 
 	Transform* NewTransform = NewFuel.GetTransform();
-	NewTransform->SetParent( a_Object );
+	NewTransform->SetParent( a_Object, false );
 	NewTransform->SetLocalScale( Vector3::One * 0.66f );
 }

@@ -24,8 +24,8 @@ private:
 class GameplaySystem
 {
 public:
-	// TODO: Multicast delegate, noting that the existing Action / Delegate doesn't handle captures
-	inline static std::function< void() > OnExitStatusChanged;
+
+	inline static Delegate<> OnExitStatusChanged;
 
 	static void StartMatch( Path& );
 	static std::weak_ptr< Match > GetMatch()

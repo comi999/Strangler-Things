@@ -22,7 +22,7 @@ GameObject CreateExitCube( GameObject& a_Parent )
 	MeshRenderer* NewRenderer = NewCube.GetComponentInChild< MeshRenderer >();
 	NewRenderer->SetMaterial( ExitMaterial );
 	Transform* NewTransform = NewCube.GetTransform();
-	NewTransform->SetParent( a_Parent );
+	NewTransform->SetParent( a_Parent, false );
 
 	return NewCube;
 }
@@ -46,7 +46,7 @@ void HorizontalExitGraphicsPopulator::Populate( GameObject& a_Object )
 	TopCube->SetLocalPositionY( 1.5f );
 	TopCube->SetLocalScale( Vector3( 1.0f, 0.6f, 1.2f ) );
 
-	GameplaySystem::OnExitStatusChanged = [=]()
+	GameplaySystem::OnExitStatusChanged += [=]()
 	{
 		if (GameplaySystem::IsExitOpen())
 		{

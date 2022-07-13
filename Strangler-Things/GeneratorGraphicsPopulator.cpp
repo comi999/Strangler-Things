@@ -19,6 +19,6 @@ void GeneratorGraphicsPopulator::Populate( GameObject& a_Object )
 	NewRenderer->SetMaterial( GeneratorMaterial );
 
 	Transform* NewTransform = NewGenerator.GetTransform();
-	NewTransform->SetParent( a_Object );
+	NewTransform->SetParent( a_Object, false );
 	NewTransform->SetLocalScale( Vector3( 0.33f, 3.0f, 0.33f ) );
 }

@@ -44,7 +44,11 @@ GameObject CreateMapObject( Vector3Int a_Coord )
 	GameObject NewMapObj = GameObject::Instantiate( SceneObj );
 	// TODO: Changing from Local to Global position here causes everything spawned to be located at origin?!?
 	// (Not important for this game, but just a strange bug for the Lengine)
-	NewMapObj.GetTransform()->SetLocalPosition( a_Coord );
+	//NewMapObj.GetTransform()->SetLocalPosition( a_Coord );
+	NewMapObj.GetTransform()->SetGlobalPosition( a_Coord );
+
+	Vector3 NewMapObjGlobalPos = NewMapObj.GetTransform()->GetGlobalPosition();
+
 	GraphicsPopulators[ _ObjectName ]( NewMapObj );
 
 	return NewMapObj;
@@ -159,9 +163,7 @@ void LoadScene( const Path& a_TilemapPath )
 
 			if ( Iter != TileCallbacks.end() )
 			{
-				// TODO: We moved the world far away because we need to use local positions to check things (global's not working, returns 0).
-				// If the world was around 0, then a pickup on top of the player (local position about 0) might incorrectly be considered close to a generator.
-				Iter->second( Vector3Int( 120 + X, 0, 140 - Y ) );
+				Iter->second( Vector3Int( X, 0, -Y ) );
 			}
 		}
 

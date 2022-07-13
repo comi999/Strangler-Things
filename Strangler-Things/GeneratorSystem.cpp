@@ -47,12 +47,7 @@ void GeneratorSystem::Update()
 		{
 			if ( Math::DistanceSqrd( GeneratorPos, FuelPos ) <= MaxFuelDistanceSq )
 			{
-				// TODO: Delete the fuel game object properly
-				GameObject* FuelObj = Fuel->GetOwner();
-				FuelObj->DestroyComponent< GeneratorFuelComponent >();
-				FuelTfm->SetGlobalPosition( Vector3( -100.0f, -100.0f, -100.0f ) );
-				FuelTfm->SetLocalScale( Vector3::Zero );
-
+				GameObject::Destroy( *Fuel->GetOwner() );
 				++m_FuelConsumed;
 				break;
 			}

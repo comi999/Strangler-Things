@@ -17,10 +17,6 @@ void LowWallGraphicsPopulator::Populate( GameObject& a_Object )
 	GameObject NewLowWall = Prefab::Instantiate( *Cube );
 	MeshRenderer* NewRenderer = NewLowWall.GetComponentInChild< MeshRenderer >();
 	NewRenderer->SetMaterial( LowWallMaterial );
-
-	Vector4 c;
-	bool success = NewRenderer->GetMaterial()->GetProperty( "diffuse_colour"_H, c );
-
 	Transform* NewTransform = NewLowWall.GetTransform();
-	NewTransform->SetParent( a_Object );
+	NewTransform->SetParent( a_Object, false );
 }

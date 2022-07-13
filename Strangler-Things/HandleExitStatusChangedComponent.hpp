@@ -10,10 +10,10 @@
 DefineComponent( HandleExitStatusChangedComponent, Component )
 {
 public:
-	void Init( std::function< void() > a_Callback )
+	void Init( Action<> a_Callback )
 	{
 		m_Callback = a_Callback;
-		// GameplaySystem::OnExitStatusChanged += MakeInvoker< void >( [&]() { m_Callback(); } );
+		GameplaySystem::OnExitStatusChanged += a_Callback;
 		m_Initd = true;
 	}
 
@@ -21,7 +21,7 @@ public:
 	{
 		if ( m_Initd )
 		{
-			// GameplaySystem::OnExitStatusChanged -= m_Callback;
+			GameplaySystem::OnExitStatusChanged -= m_Callback;
 		}
 	}
 

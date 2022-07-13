@@ -21,6 +21,6 @@ void HighWallGraphicsPopulator::Populate( GameObject& a_Object )
 		NewRenderer->SetMaterial( HighWallMaterial );
 		Transform* NewTransform = NewHighWall.GetTransform();
 		NewTransform->SetGlobalPositionY( i );
-		NewTransform->SetParent( a_Object );
+		NewTransform->SetParent( a_Object, false );
 	}
 }
