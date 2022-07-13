@@ -2,6 +2,7 @@
 
 #include "CGE.hpp"
 
+#include "AudioSource.hpp"
 #include "GeneratorComponent.hpp"
 #include "GeneratorFuelComponent.hpp"
 #include "GeneratorSystem.hpp"
@@ -28,14 +29,6 @@ void GeneratorSystem::Update()
 	auto Generators = Component::GetComponents< GeneratorComponent >();
 	auto Fuels = Component::GetComponents< GeneratorFuelComponent >();
 
-	std::vector< Vector3 > GeneratorPositions( Generators.size() );
-	size_t I = 0;
-	for ( auto Begin = Generators.begin(), End = Generators.end(); Begin != End; ++Begin, ++I )
-	{
-		GeneratorPositions[ I ] = (*Begin)->GetTransform()->GetLocalPosition();
-		GeneratorPositions[ I ].y = 0;
-	}
-
 	for ( auto Fuel : Fuels )
 	{
 		Transform* FuelTfm = Fuel->GetTransform();
@@ -43,10 +36,15 @@ void GeneratorSystem::Update()
 		Vector3 FuelPos = FuelTfm->GetLocalPosition();
 		FuelPos.y = 0;
 
-		for ( auto& GeneratorPos : GeneratorPositions )
+		for ( auto& Generator : Generators )
 		{
+			auto GeneratorPos = Generator->GetTransform()->GetLocalPosition();
+			GeneratorPos.y = 0.0f;
 			if ( Math::DistanceSqrd( GeneratorPos, FuelPos ) <= MaxFuelDistanceSq )
 			{
+                auto* GeneratorAudio = Generator->GetOwner()->GetComponent<AudioSource>();
+				GeneratorAudio->Play();
+
 				GameObject::Destroy( *Fuel->GetOwner() );
 				++m_FuelConsumed;
 				break;

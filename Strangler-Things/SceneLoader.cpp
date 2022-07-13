@@ -98,7 +98,10 @@ GameObject CreateGenerator( Vector3Int a_Coord )
 {
 	GameObject Generator = CreateMapObject< "Generator"_H >( a_Coord );
 	Generator.AddComponent< GeneratorComponent >();
-	Generator.AddComponent< AudioSource >();
+	auto* audioSource = Generator.AddComponent< AudioSource >();
+	auto sound = Resource::Load< SfxrClip >("powerup"_H);
+	audioSource->LoadSfx(sound);
+	audioSource->SetRolloffFactor(0.1f);
 
 	return Generator;
 }
