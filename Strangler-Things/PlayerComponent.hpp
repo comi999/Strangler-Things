@@ -15,8 +15,11 @@ DefineComponent( PlayerComponent, Component )
 public:
 	Delegate<> OnPickedUpObject;
 	Delegate<> OnDroppedObject;
+	float TimeSpentWalking = 0.0f;
+	bool AnimationState = 0.0f;
+	Vector2Int PreviousDirection = Vector2Int::Down;
 
-	Vector3 GetLastMovementOffset() { return m_LastMovementOffset; }
+	Vector3 GetLastMovementOffset() const { return m_LastMovementOffset; }
 
 private:
 	GameObject m_PickedUpObject;

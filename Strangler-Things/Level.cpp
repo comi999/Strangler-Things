@@ -9,7 +9,7 @@
 #include "PickUpAbleComponent.hpp"
 #include "PlayerComponent.hpp"
 #include "CameraSystem.hpp"
-
+#include "MeshRenderer.hpp"
 
 GameObject LevelGameObject;
 
@@ -151,7 +151,6 @@ bool Level::SetActiveLevel( Hash a_Name )
 	GP.Scene( LevelGameObject, a_Name );
 	AP_.Scene( LevelGameObject, a_Name );
 
-	Atlas& at = s_ActiveLevel->m_LevelAtlas;
 	for ( int32_t Y = 0; Y < s_ActiveLevel->m_LevelSize.y; ++Y )
 	{
 		for ( int32_t X = 0; X < s_ActiveLevel->m_LevelSize.x; ++X )

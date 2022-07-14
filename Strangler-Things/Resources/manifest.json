@@ -180,6 +180,26 @@
       "Type": "texture",
       "Path": "Textures/UI/Instruction Refuel Generator.png"
     },
+    "door_closed": {
+      "Type": "texture",
+      "Path": "Textures/World/Door Closed.jpg"
+    },
+    "door_open": {
+      "Type": "texture",
+      "Path": "Textures/World/Door Open.jpg"
+    },
+    "floor": {
+      "Type": "texture",
+      "Path": "Textures/World/Floor.jpg"
+    },
+    "low_wall_top": {
+      "Type": "texture",
+      "Path": "Textures/World/LowWallTop.jpg"
+    },
+    "wall": {
+      "Type": "texture",
+      "Path": "Textures/World/Wall.jpg"
+    },
     "music": {
       "Type": "audioclip",
       "Path": "Sfx/music.mp3"
