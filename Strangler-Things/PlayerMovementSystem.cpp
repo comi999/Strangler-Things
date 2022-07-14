@@ -20,7 +20,7 @@ void PlayerMovementSystem::Update()
 		auto Transform = Player->GetOwner()->GetTransform();
 		auto Offset = Vector3::Zero;
 		Vector3 CurrentPosition = Transform->GetLocalPosition();
-		
+
 		if (
 			(
 				Input::IsKeyDown( KeyCode::Left  ) ||
