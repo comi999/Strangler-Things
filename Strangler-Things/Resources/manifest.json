@@ -179,6 +179,10 @@
     "instruction_refuel_generator": {
       "Type": "texture",
       "Path": "Textures/UI/Instruction Refuel Generator.png"
+    },
+    "music": {
+      "Type": "audioclip",
+      "Path": "Sfx/music.mp3"
     }
   }
 }

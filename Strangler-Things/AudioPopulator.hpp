@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AudioClip.hpp"
 #include "AudioSource.hpp"
 #include "SfxrClip.hpp"
 
@@ -11,7 +12,17 @@
 class AudioPopulator
 {
 public:
-	void Global() { };
+	void Global() {
+		auto music = Resource::Load< AudioClip >("music"_H);
+		auto musicObject = GameObject::Instantiate(Name("music"));
+		auto* musicSource = musicObject.AddComponent<AudioSource>();
+		musicSource->Set3d(false);
+		musicSource->SetVolume(0.5f);
+		musicSource->LoadWav(music);
+		musicSource->Play();
+		musicSource->SetLooping(true);
+		musicSource->SetLoopPoint(9.975);
+	};
 	void Scene( GameObject a_Object, Hash a_LevelName ) { };
 	void HorizontalExit( GameObject a_Object ) { };
 	void Player( GameObject a_Object )
@@ -24,6 +35,7 @@ public:
 			auto footstepSfx = Resource::Load< SfxrClip >("footstep"_H);
 			audioSource->LoadSfx(footstepSfx);
 			audioSource->SetRolloffFactor(0.1f);
+			audioSource->SetLooping(true);
 		}
 
 		footstepsSourceObj.AddComponent< OnLateGameplayUpdateComponent >()
@@ -37,7 +49,6 @@ public:
 					if (audioSource && !audioSource->IsPlaying())
 					{
 						audioSource->Play();
-						audioSource->SetLooping(true);
 					}
 				}
 				else
