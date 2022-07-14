@@ -4,6 +4,10 @@
       "Type": "prefab",
       "Path": "./Cube/cube.obj"
     },
+    "plane": {
+      "Type": "mesh",
+      "Path": "./Plane/plane.obj"
+    },
     "buzz": {
       "Type": "sfxrclip",
       "Path": "Sfx/buzz.sfs"
@@ -39,6 +43,138 @@
     "siren_warning": {
       "Type": "sfxrclip",
       "Path": "Sfx/siren_warning.sfs"
+    },
+    "arrow_back_active": {
+      "Type": "texture",
+      "Path": "Textures/UI/Arrow Back Active.jpg"
+    },
+    "arrow_back": {
+      "Type": "texture",
+      "Path": "Textures/UI/Arrow Back.jpg"
+    },
+    "arrow_forward_active": {
+      "Type": "texture",
+      "Path": "Textures/UI/Arrow Forward Active.jpg"
+    },
+    "arrow_forward": {
+      "Type": "texture",
+      "Path": "Textures/UI/Arrow Forward.jpg"
+    },
+    "back_button_active": {
+      "Type": "texture",
+      "Path": "Textures/UI/Back Button Active.jpg"
+    },
+    "back_button": {
+      "Type": "texture",
+      "Path": "Textures/UI/Back Button.jpg"
+    },
+    "instruction_button_active": {
+      "Type": "texture",
+      "Path": "Textures/UI/Instruction Button Active.jpg"
+    },
+    "instruction_button": {
+      "Type": "texture",
+      "Path": "Textures/UI/Instruction Button.jpg"
+    },
+    "level_number_1": {
+      "Type": "texture",
+      "Path": "Textures/UI/Level Number 1.jpg"
+    },
+    "level_number_2": {
+      "Type": "texture",
+      "Path": "Textures/UI/Level Number 2.jpg"
+    },
+    "level_number_3": {
+      "Type": "texture",
+      "Path": "Textures/UI/Level Number 3.jpg"
+    },
+    "level_number_4": {
+      "Type": "texture",
+      "Path": "Textures/UI/Level Number 4.jpg"
+    },
+    "level_number_5": {
+      "Type": "texture",
+      "Path": "Textures/UI/Level Number 5.jpg"
+    },
+    "level_select_background": {
+      "Type": "texture",
+      "Path": "Textures/UI/Level Select Background.jpg"
+    },
+    "menu_background": {
+      "Type": "texture",
+      "Path": "Textures/UI/Menu Background.jpg"
+    },
+    "play_button_active": {
+      "Type": "texture",
+      "Path": "Textures/UI/Play Button Active.jpg"
+    },
+    "play_button": {
+      "Type": "texture",
+      "Path": "Textures/UI/Play Button.jpg"
+    },
+    "player_back_stand": {
+      "Type": "texture",
+      "Path": "Textures/Player/Back/back-stand.png"
+    },
+    "player_back_walk_1": {
+      "Type": "texture",
+      "Path": "Textures/Player/Back/back-walk-1.png"
+    },
+    "player_back_walk_2": {
+      "Type": "texture",
+      "Path": "Textures/Player/Back/back-walk-2.png"
+    },
+    "player_front_stand": {
+      "Type": "texture",
+      "Path": "Textures/Player/Front/front-stand.png"
+    },
+    "player_front_walk_1": {
+      "Type": "texture",
+      "Path": "Textures/Player/Front/front-walk-1.png"
+    },
+    "player_front_walk_2": {
+      "Type": "texture",
+      "Path": "Textures/Player/Front/front-walk-2.png"
+    },
+    "player_left_stand": {
+      "Type": "texture",
+      "Path": "Textures/Player/Left/left-stand.png"
+    },
+    "player_left_walk_1": {
+      "Type": "texture",
+      "Path": "Textures/Player/Left/left-walk-1.png"
+    },
+    "player_left_walk_2": {
+      "Type": "texture",
+      "Path": "Textures/Player/Left/left-walk-2.png"
+    },
+    "player_right_stand": {
+      "Type": "texture",
+      "Path": "Textures/Player/Right/right-stand.png"
+    },
+    "player_right_walk_1": {
+      "Type": "texture",
+      "Path": "Textures/Player/Right/right-walk-1.png"
+    },
+    "player_right_walk_2": {
+      "Type": "texture",
+      "Path": "Textures/Player/Right/right-walk-2.png"
+    },
+    "instruction_drop_fuel": {
+      "Type": "texture",
+      "Path": "Textures/UI/Instruction Drop Fuel.png"
+    },
+    "instruction_pickup_fuel": {
+      "Type": "texture",
+      "Path": "Textures/UI/Instruction Pickup Fuel.png"
+    },
+    "instruction_exit_level": {
+      "Type": "texture",
+      "Path": "Textures/UI/Instruction Exit Level.png"
+    },
+    "instruction_refuel_generator": {
+      "Type": "texture",
+      "Path": "Textures/UI/Instruction Refuel Generator.png"
     }
   }
 }
