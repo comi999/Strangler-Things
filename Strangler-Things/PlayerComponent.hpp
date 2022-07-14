@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Component.hpp"
+#include "Delegate.hpp"
 
 
 class PickUpSystem;

@@ -24,6 +24,7 @@ void GameplaySystem::Update()
 	m_PlayerMovementSystem.Update();
 	m_GeneratorSystem.Update();
 	m_PickUpSystem.Update();
+	m_TentacleGrowthSystem.Update();
 	m_LateGameplayUpdateSystem.Update();
 
 }

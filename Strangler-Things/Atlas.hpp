@@ -4,6 +4,9 @@
 
 #include "Math.hpp"
 
+#include "MathHelpers.hpp"
+
+
 class Atlas
 {
 private:
@@ -94,11 +97,7 @@ public:
 
 	inline bool CheckNode( Vector3 a_Position ) const
 	{
-		Vector2UInt Rounded = Vector2UInt(
-			Math::Round( a_Position.x ),
-			Math::Round( a_Position.z )
-		);
-		return GetNode( Rounded )->Enabled;
+		return GetNode( MathHelpers::PositionToCoord2( a_Position ) )->Enabled;
 	}
 
 	bool EnableNode( Vector2UInt a_Coordinate )
