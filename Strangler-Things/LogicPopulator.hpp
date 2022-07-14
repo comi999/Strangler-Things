@@ -9,6 +9,7 @@
 #include "OnFullyFueledChangedComponent.hpp"
 #include "PickUpAbleComponent.hpp"
 #include "PlayerComponent.hpp"
+#include "TentacleComponent.hpp"
 
 
 class LogicPopulator
@@ -39,7 +40,11 @@ public:
 		CameraSystem::Follow( a_Object );
 
 	};
-	void TentacleStart( GameObject a_Object ) { };
+	void TentacleStart( GameObject a_Object )
+	{
+		a_Object.AddComponent< TentacleComponent >()->Init();
+		AddCollision( a_Object );
+	};
 	void Random( GameObject a_Object ) { };
 	void Fuel( GameObject a_Object )
 	{

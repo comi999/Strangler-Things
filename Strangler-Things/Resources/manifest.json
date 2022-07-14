@@ -4,6 +4,10 @@
       "Type": "prefab",
       "Path": "./Cube/cube.obj"
     },
+    "cylinder": {
+      "Type": "prefab",
+      "Path": "./Cylinder/cylinder.obj"
+    },
     "plane": {
       "Type": "mesh",
       "Path": "./Plane/plane.obj"
