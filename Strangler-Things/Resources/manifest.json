@@ -203,6 +203,10 @@
     "music": {
       "Type": "audioclip",
       "Path": "Sfx/music.mp3"
+    },
+    "fuel": {
+      "Type": "prefab",
+      "Path": "Fuel/fuel.obj"
     }
   }
 }
