@@ -1,41 +1,18 @@
 #pragma once
 
-#include <functional>
-#include <memory>
-
+#include "Atlas.hpp"
 #include "GeneratorSystem.hpp"
-#include "GridOccupancySystem.hpp"
+#include "LateGameplayUpdateSystem.hpp"
 #include "PickUpSystem.hpp"
 #include "PlayerMovementSystem.hpp"
 
 
 class Path;
 
-class Match
-{
-public:
-	GridOccupancySystem& GetGridOccupancySystem() { return m_GridOccupancySystem; }
-
-private:
-	GridOccupancySystem m_GridOccupancySystem;
-
-};
-
 class GameplaySystem
 {
 public:
-
-	inline static Delegate<> OnExitStatusChanged;
-
-	static void StartMatch( Path& );
-	static std::weak_ptr< Match > GetMatch()
-	{
-		return std::weak_ptr< Match >( s_I->m_Match );
-	}
-	static bool IsExitOpen()
-	{
-		return s_I->m_GeneratorSystem.IsFullyFueled();
-	}
+	static void StartLevel( Hash );
 
 	GameplaySystem();
 
@@ -44,8 +21,8 @@ public:
 private:
 	inline static GameplaySystem* s_I;
 
-	std::shared_ptr< Match > m_Match;
 	GeneratorSystem m_GeneratorSystem;
+	LateGameplayUpdateSystem m_LateGameplayUpdateSystem;
 	PickUpSystem m_PickUpSystem;
 	PlayerMovementSystem m_PlayerMovementSystem;
 

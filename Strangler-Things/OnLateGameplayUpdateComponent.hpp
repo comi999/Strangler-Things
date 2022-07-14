@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include "Component.hpp"
 #include "GameplaySystem.hpp"
 #include "Invoker.hpp"
@@ -12,12 +14,12 @@ DefineComponent( OnLateGameplayUpdateComponent, Component )
 	friend LateGameplayUpdateSystem;
 
 public:
-	void Init( Action<> a_Callback )
+	void Init( std::function< void() > a_Callback )
 	{
 		m_Callback = a_Callback;
 	}
 
 private:
-	Action<> m_Callback;
+	std::function< void() > m_Callback;
 
 };

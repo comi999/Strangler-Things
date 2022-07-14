@@ -6,7 +6,7 @@
 #include "GameObject.hpp"
 #include "GeneratorComponent.hpp"
 #include "GeneratorFuelComponent.hpp"
-#include "OnExitStatusChangedComponent.hpp"
+#include "OnFullyFueledChangedComponent.hpp"
 #include "PickUpAbleComponent.hpp"
 #include "PlayerComponent.hpp"
 
@@ -20,10 +20,10 @@ public:
 		Vector3Int Coord = a_Object.GetTransform()->GetGlobalPosition();
 
 		GameObject::Instantiate( a_Object )
-			.AddComponent< OnExitStatusChangedComponent >( )
+			.AddComponent< OnFullyFueledChangedComponent >( )
 			->Init([=]()
 			{
-				if (GameplaySystem::IsExitOpen())
+				if ( GeneratorSystem::IsFullyFueled() )
 				{
 					Level::GetActiveLevel()->GetAtlas().EnableNode( Coord.swizzle.xz );
 				}

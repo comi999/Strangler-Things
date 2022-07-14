@@ -3,13 +3,13 @@
 #include "GameObject.hpp"
 #include "Prefab.hpp"
 
-#include "OnExitStatusChangedComponent.hpp"
+#include "OnFullyFueledChangedComponent.hpp"
 
 
 class GraphicsPopulatorBase
 {
 public:
-	virtual void Scene( GameObject a_Object ) { };
+	virtual void Scene( GameObject a_Object, Hash a_LevelName ) { };
 	virtual void Abyss( GameObject a_Object ) { };
 	virtual void Floor( GameObject a_Object ) { };
 	virtual void HighWall( GameObject a_Object )
@@ -100,12 +100,12 @@ public:
 		}
 
 		GameObject::Instantiate( a_Object )
-			.AddComponent< OnExitStatusChangedComponent >( )
+			.AddComponent< OnFullyFueledChangedComponent >( )
 			->Init([=]()
 			{
 				Transform* ClosedCube = ( (GameObject)ClosedCubeObj ).GetTransform();
 
-				if (GameplaySystem::IsExitOpen())
+				if ( GeneratorSystem::IsFullyFueled() )
 				{
 					ClosedCube->SetLocalScale( Vector3::Zero );
 				}

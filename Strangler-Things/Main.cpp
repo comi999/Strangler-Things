@@ -1,4 +1,4 @@
-#include <iostream>
+#include <vector>
 
 #include "CGE.hpp"
 #include "File.hpp"
@@ -6,8 +6,8 @@
 
 #include "AudioPopulator.hpp"
 #include "CameraSystem.hpp"
+#include "Level.hpp"
 #include "GameplaySystem.hpp"
-#include "SceneLoader.hpp"
 
 
 int main( int argc, char** argv )
@@ -19,19 +19,24 @@ int main( int argc, char** argv )
 	CameraSystem CameraSystem;
 	GameplaySystem GameplaySystem{};
 
-	Path TilemapLevels[] {
-		Path( "./Resources/Maps/Level1.txt" ),
-		Path( "./Resources/Maps/Level2.txt" ),
-		Path( "./Resources/Maps/Level3.txt" )
+	Hash StartingLevel = "Level1"_H;
+	std::vector< std::pair< Hash, std::string > > Levels {
+		std::make_pair( "Menu"_H,   ""                              ),
+		std::make_pair( "Level1"_H, "./Resources/Levels/Level1.txt" ),
+		std::make_pair( "Level2"_H, "./Resources/Levels/Level2.txt" ),
+		std::make_pair( "Level3"_H, "./Resources/Levels/Level3.txt" )
 	};
-	
-	Path StartingMap;
-	if (argc >= 2)
-		StartingMap = Path( argv[1] );
-	else StartingMap = TilemapLevels[0];
+
+	if ( argc >= 2 )
+	{
+		Levels.push_back( std::make_pair( "CLILevel"_H, Path( argv[1] ) ) );
+		StartingLevel = "CLILevel"_H;
+	}
+
+	Level::Preload( Levels );
 	
 	AP_.Global();
-	GameplaySystem::StartMatch( StartingMap );
+	GameplaySystem::StartLevel( StartingLevel );
 
 	Action<> GameLoop = [&]()
 	{

@@ -1,29 +1,21 @@
 #include "File.hpp"
 
 #include "GameplaySystem.hpp"
-#include "SceneLoader.hpp"
+#include "Level.hpp"
 
 
-void HandleFuelConsumptionChanged()
+void GameplaySystem::StartLevel( Hash a_LevelName )
 {
-	GameplaySystem::OnExitStatusChanged();
-}
+	Level::SetActiveLevel( a_LevelName );
 
-void GameplaySystem::StartMatch( Path& a_TilemapPath )
-{
-	s_I->m_Match = std::make_shared< Match >();
-	LoadScene( a_TilemapPath );
-
-	s_I->m_GeneratorSystem.InitForNewMatch();
+	s_I->m_GeneratorSystem.InitForNewLevel();
 
 }
 
 GameplaySystem::GameplaySystem()
+	: m_PickUpSystem()
 {
 	s_I = this;
-	m_Match = nullptr;
-
-	m_GeneratorSystem.OnFuelConsumptionChanged += HandleFuelConsumptionChanged;
 
 }
 
@@ -32,5 +24,6 @@ void GameplaySystem::Update()
 	m_PlayerMovementSystem.Update();
 	m_GeneratorSystem.Update();
 	m_PickUpSystem.Update();
+	m_LateGameplayUpdateSystem.Update();
 
 }

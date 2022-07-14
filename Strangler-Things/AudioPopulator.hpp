@@ -3,19 +3,18 @@
 #include "AudioSource.hpp"
 #include "SfxrClip.hpp"
 
-#include "AudioPopulatorBase.hpp"
 #include "GeneratorComponent.hpp"
 #include "OnLateGameplayUpdateComponent.hpp"
 #include "PlayerComponent.hpp"
 
 
-class AudioPopulator : public AudioPopulatorBase
+class AudioPopulator
 {
 public:
-	void Global() override { };
-	void Scene( GameObject a_Object ) override { };
-	void HorizontalExit( GameObject a_Object ) override { };
-	void Player( GameObject a_Object ) override
+	void Global() { };
+	void Scene( GameObject a_Object, Hash a_LevelName ) { };
+	void HorizontalExit( GameObject a_Object ) { };
+	void Player( GameObject a_Object )
 	{
 		auto* Player = a_Object.GetComponent< PlayerComponent >();
 
@@ -71,10 +70,10 @@ public:
 			Audio->Play();
 		};
 	};
-	void TentacleStart( GameObject a_Object ) override { };
-	void Random( GameObject a_Object ) override { };
-	void Fuel( GameObject a_Object ) override { };
-	void Generator( GameObject a_Object ) override
+	void TentacleStart( GameObject a_Object ) { };
+	void Random( GameObject a_Object ) { };
+	void Fuel( GameObject a_Object ) { };
+	void Generator( GameObject a_Object )
 	{
 		auto audioSourceObj = GameObject::Instantiate( a_Object );
 		auto* audioSource = audioSourceObj.AddComponent< AudioSource >();
@@ -88,7 +87,7 @@ public:
 				((GameObject)audioSourceObj).GetComponent< AudioSource >()->Play();
 			};
 	};
-	void Bonus( GameObject a_Object ) override { };
+	void Bonus( GameObject a_Object ) { };
 
 };
 

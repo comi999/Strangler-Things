@@ -13,7 +13,7 @@ void PlayerMovementSystem::Update()
 	static float CollisionSize = 0.5f;
 
 	float D = Time::GetRealDeltaTime();
-	auto& Grid = GameplaySystem::GetMatch().lock()->GetGridOccupancySystem();
+	auto& Atlas = Level::GetActiveLevel()->GetAtlas();
 
 	for ( auto Player : Component::GetComponents< PlayerComponent >() )
 	{
@@ -26,7 +26,7 @@ void PlayerMovementSystem::Update()
 				Input::IsKeyDown( KeyCode::Left  ) ||
 				Input::IsKeyDown( KeyCode::A     )
 			) &&
-			!Grid.CoordIsOccupied( CurrentPosition + Vector3::Left * CollisionSize )
+			Atlas.CheckNode( CurrentPosition + Vector3::Left * CollisionSize )
 		)
 		{
 			Offset.x -= Speed * D;
@@ -36,7 +36,7 @@ void PlayerMovementSystem::Update()
 				Input::IsKeyDown( KeyCode::Right ) ||
 				Input::IsKeyDown( KeyCode::D     )
 			) &&
-			!Grid.CoordIsOccupied( CurrentPosition + Vector3::Right * CollisionSize )
+			Atlas.CheckNode( CurrentPosition + Vector3::Right * CollisionSize )
 		)
 		{
 			Offset.x += Speed * D;
@@ -46,7 +46,7 @@ void PlayerMovementSystem::Update()
 				Input::IsKeyDown( KeyCode::Up    ) ||
 				Input::IsKeyDown( KeyCode::W     )
 			) &&
-			!Grid.CoordIsOccupied( CurrentPosition + Vector3::Forward * CollisionSize )
+			Atlas.CheckNode( CurrentPosition + Vector3::Forward * CollisionSize )
 		)
 		{
 			Offset.z += Speed * D;
@@ -56,7 +56,7 @@ void PlayerMovementSystem::Update()
 				Input::IsKeyDown( KeyCode::Down  ) ||
 				Input::IsKeyDown( KeyCode::S     )
 			) &&
-			!Grid.CoordIsOccupied( CurrentPosition + Vector3::Backward * CollisionSize )
+			Atlas.CheckNode( CurrentPosition + Vector3::Backward * CollisionSize )
 		) Offset.z -= Speed * D;
 
 		if (Offset != Vector3::Zero)

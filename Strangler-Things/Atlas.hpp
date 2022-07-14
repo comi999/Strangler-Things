@@ -92,6 +92,15 @@ public:
 		return GetNode( a_Coordinate )->Enabled;
 	}
 
+	inline bool CheckNode( Vector3 a_Position ) const
+	{
+		Vector2UInt Rounded = Vector2UInt(
+			Math::Round( a_Position.x ),
+			Math::Round( a_Position.z )
+		);
+		return GetNode( Rounded )->Enabled;
+	}
+
 	bool EnableNode( Vector2UInt a_Coordinate )
 	{
 		Node* ThisNode = GetNode( a_Coordinate );

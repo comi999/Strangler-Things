@@ -7,14 +7,18 @@
 class GeneratorSystem
 {
 public:
-	Delegate<> OnFuelConsumptionChanged;
-	Delegate<> OnFullyFueled;
+	inline static Delegate<> OnFullyFueledChanged;
+	static bool IsFullyFueled();
 
-	void InitForNewMatch();
+	Delegate<> OnFuelConsumptionChanged;
+	Delegate<> OnFullyFueledHere;
+	GeneratorSystem();
+	void InitForNewLevel();
 	void Update();
-	bool IsFullyFueled();
 
 private:
+	inline static GeneratorSystem* s_I;
+
 	int m_FuelRequired;
 	int m_FuelConsumed;
 

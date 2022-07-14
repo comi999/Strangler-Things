@@ -8,13 +8,21 @@
 #include "GeneratorSystem.hpp"
 
 
-void GeneratorSystem::InitForNewMatch()
+GeneratorSystem::GeneratorSystem()
+{
+	s_I = this;
+
+}
+
+void GeneratorSystem::InitForNewLevel()
 {
 	auto Fuels = Component::GetComponents< GeneratorFuelComponent >();
 	m_FuelRequired = Fuels.size();
 	m_FuelConsumed = 0;
-
+	
+	OnFullyFueledChanged.InvokeAll();
 	OnFuelConsumptionChanged.InvokeAll();
+
 }
 
 void GeneratorSystem::Update()
@@ -76,7 +84,8 @@ void GeneratorSystem::Update()
 
 				if (m_FuelConsumed == m_FuelRequired)
 				{
-					OnFullyFueled.InvokeAll();
+					OnFullyFueledChanged.InvokeAll();
+					OnFullyFueledHere.InvokeAll();
 				}
 
 				Generator->OnConsumedFuel.InvokeAll();
@@ -90,5 +99,5 @@ void GeneratorSystem::Update()
 
 bool GeneratorSystem::IsFullyFueled()
 {
-	return m_FuelConsumed >= m_FuelRequired;
+	return s_I->m_FuelConsumed >= s_I->m_FuelRequired;
 }

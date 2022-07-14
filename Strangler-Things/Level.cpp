@@ -6,11 +6,12 @@
 #include "GeneratorFuelComponent.hpp"
 #include "GraphicsPopulator.hpp"
 #include "LogicPopulator.hpp"
-#include "OnExitStatusChangedComponent.hpp"
 #include "PickUpAbleComponent.hpp"
 #include "PlayerComponent.hpp"
 #include "CameraSystem.hpp"
 
+
+GameObject LevelGameObject;
 
 std::map< LevelObject, std::tuple< Action< GameObject >, Action< GameObject >, Action< GameObject > > > Populators = 
 {
@@ -27,7 +28,7 @@ std::map< LevelObject, std::tuple< Action< GameObject >, Action< GameObject >, A
 	std::make_pair( LevelObject::BONUS,           std::make_tuple( Action< GameObject >( LP_, &LogicPopulator::Bonus ),          Action< GameObject >( GP, &GraphicsPopulator::Bonus ),          Action< GameObject >( AP_, &AudioPopulator::Bonus )          ) ),
 };
 
-GameObject CreateMapObject( LevelObject a_ObjectType, Vector3Int a_Coord )
+GameObject CreateTileGameObject( LevelObject a_ObjectType, Vector3Int a_Coord )
 {
 	GameObject NewMapObj = GameObject::Instantiate();
 	NewMapObj.GetTransform()->SetGlobalPosition( a_Coord );
@@ -48,7 +49,7 @@ Vector2UInt Level::GetLevelSize() const
 	return m_LevelSize;
 }
 
-LevelObject Level::GetLevelObject( Vector2UInt a_Coordinate ) const
+LevelObject Level::GetTile( Vector2UInt a_Coordinate ) const
 {
 	size_t Offset = ( size_t )a_Coordinate.y * m_LevelSize.x + a_Coordinate.x;
 
@@ -60,28 +61,113 @@ LevelObject Level::GetLevelObject( Vector2UInt a_Coordinate ) const
 	return ( LevelObject )m_LevelData[ Offset ];
 }
 
-void Level::PopulateScene( GameObject a_Scene )
+std::string FileToString( File& a_File )
 {
-	GP.Scene( a_Scene );
-	AP_.Scene( a_Scene );
+	if ( a_File.Open() )
+	{
+		std::string S;
+		S.resize( a_File.Size() );
+		a_File.Read( S.data(), S.size() );
+		a_File.Close();
+
+		return S;
+	}
+
+	throw std::exception( "Could not open file" );
+}
+
+void Level::CreateNewLevel( Hash a_Name, std::string a_LevelPath )
+{
+	std::string TilemapString = "..\n..";
+	Vector2UInt LevelSize = Vector2UInt( 2, 2 );
+
+	if ( a_LevelPath != "" )
+	{
+		File LevelFile = Path( a_LevelPath.c_str() );
+		TilemapString = FileToString( LevelFile );
+
+		std::stringstream TilemapStream( TilemapString );
+		std::vector< std::string > Rows;
+		size_t Width = 0;
+	
+		// Create collection of rows and store largest Width.
+		while ( !TilemapStream.eof() )
+		{
+			auto& NewRow = Rows.emplace_back();
+			std::getline( TilemapStream, NewRow );
+			Width = Math::Max( Width, NewRow.size() );
+		}
+	
+		// Pad out all rows to Width.
+		for ( auto& Row : Rows )
+		{
+			Row.resize( Width );
+		}
+	
+		// Get the size of the level.
+		LevelSize = { Width, Rows.size() };
+	
+		// Compile all rows into level data.
+		TilemapString.clear();
+	
+		for ( auto Begin = Rows.rbegin(), End = Rows.rend(); Begin != End; ++Begin )
+		{
+			TilemapString += *Begin;
+		}
+	}
+
+	s_Levels.emplace( std::piecewise_construct, std::forward_as_tuple( a_Name ), std::forward_as_tuple( TilemapString, LevelSize ) );
+}
+
+void Level::Preload( std::vector< std::pair< Hash, std::string > > a_Levels )
+{
+	for ( auto& LevelPair : a_Levels )
+	{
+		CreateNewLevel( LevelPair.first, LevelPair.second );
+	}
+}
+
+bool Level::SetActiveLevel( Hash a_Name )
+{
+	auto Iter = s_Levels.find( a_Name );
+
+	if ( Iter == s_Levels.end() )
+	{
+		return false;
+	}
+	
+	if ( LevelGameObject.IsValid() )
+	{
+		GameObject::Destroy( LevelGameObject );
+	}
+	LevelGameObject = GameObject::Instantiate( "Level"_N );
+
+	s_ActiveLevel = &Iter->second;
+	s_ActiveLevel->ResetAtlas();
+
+	GP.Scene( LevelGameObject, a_Name );
+	AP_.Scene( LevelGameObject, a_Name );
 
 	Atlas& at = s_ActiveLevel->m_LevelAtlas;
-	for ( int32_t Y = 0; Y < m_LevelSize.y; ++Y )
+	for ( int32_t Y = 0; Y < s_ActiveLevel->m_LevelSize.y; ++Y )
 	{
-		for ( int32_t X = 0; X < m_LevelSize.x; ++X )
+		for ( int32_t X = 0; X < s_ActiveLevel->m_LevelSize.x; ++X )
 		{
-			LevelObject ObjectAtLocation = GetLevelObject( Vector2UInt{ X, Y } );
+			LevelObject ObjectAtLocation = s_ActiveLevel->GetTile( Vector2UInt{ X, Y } );
 
 			if ( Populators.find( ObjectAtLocation ) == Populators.end() )
 			{
 				continue;
 			}
 
-			GameObject NewObject = CreateMapObject( ObjectAtLocation, Vector3Int( X, 0, Y ) );
-			if ( NewObject.IsValid() ) a_Scene.GetTransform()->AttachChild( NewObject );
+			GameObject NewObject = CreateTileGameObject( ObjectAtLocation, Vector3Int( X, 0, Y ) );
+			if ( NewObject.IsValid() ) LevelGameObject.GetTransform()->AttachChild( NewObject );
 		}
 	}
+
+	return true;
 }
+
 
 void Level::ResetAtlas()
 {
@@ -98,12 +184,6 @@ const Atlas& Level::GetAtlas() const
 	return m_LevelAtlas;
 }
 
-Level* Level::CreateNewLevel( Hash a_Name, const std::string& a_Tilemap, Vector2UInt a_Size )
-{
-	auto Result = s_Levels.emplace( std::piecewise_construct, std::forward_as_tuple( a_Name ), std::forward_as_tuple( a_Tilemap, a_Size ) );
-	return Result.second ? &Result.first->second : nullptr;
-}
-
 Level* Level::GetLevel( Hash a_Name )
 {
 	auto Result = s_Levels.find( a_Name );
@@ -113,17 +193,4 @@ Level* Level::GetLevel( Hash a_Name )
 Level* Level::GetActiveLevel()
 {
 	return s_ActiveLevel;
-}
-
-bool Level::SetActiveLevel( Hash a_Name )
-{
-	auto Iter = s_Levels.find( a_Name );
-
-	if ( Iter == s_Levels.end() )
-	{
-		return false;
-	}
-
-	s_ActiveLevel = &Iter->second;
-	return true;
 }

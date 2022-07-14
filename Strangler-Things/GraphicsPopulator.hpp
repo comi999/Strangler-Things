@@ -6,7 +6,7 @@
 class GraphicsPopulator : public GraphicsPopulatorBase
 {
 public:
-	void Scene( GameObject a_Object ) override
+	void Scene( GameObject a_Object, Hash a_LevelName ) override
 	{
 		// Create Sun
 		GameObject SunObject = GameObject::Instantiate( "Sun"_N, a_Object );
