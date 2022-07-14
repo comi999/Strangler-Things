@@ -8,6 +8,7 @@ class GeneratorSystem
 {
 public:
 	Delegate<> OnFuelConsumptionChanged;
+	Delegate<> OnFullyFueled;
 
 	void InitForNewMatch();
 	void Update();

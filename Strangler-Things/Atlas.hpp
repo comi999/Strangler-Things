@@ -85,8 +85,6 @@ public:
 		BRNode->North() = GetNode( { m_Size.x - 1, 1u } );
 		BRNode->West() = GetNode( { m_Size.x - 2, 0u } );
 
-
-		auto* n = GetNode( {16,0});
 	}
 
 	inline bool CheckNode( Vector2UInt a_Coordinate ) const

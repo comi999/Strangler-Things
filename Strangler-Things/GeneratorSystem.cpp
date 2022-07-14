@@ -33,8 +33,37 @@ void GeneratorSystem::Update()
 	{
 		Transform* FuelTfm = Fuel->GetTransform();
 		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
+		// TODO: Use global position so it'll find things the player is picking up
 		Vector3 FuelPos = FuelTfm->GetLocalPosition();
-		FuelPos.y = 0;
+		FuelPos.y = 0.0f;
 
 		for ( auto& Generator : Generators )
 		{
@@ -42,11 +71,15 @@ void GeneratorSystem::Update()
 			GeneratorPos.y = 0.0f;
 			if ( Math::DistanceSqrd( GeneratorPos, FuelPos ) <= MaxFuelDistanceSq )
 			{
-                auto* GeneratorAudio = Generator->GetOwner()->GetComponent<AudioSource>();
-				GeneratorAudio->Play();
-
 				GameObject::Destroy( *Fuel->GetOwner() );
 				++m_FuelConsumed;
+
+				if (m_FuelConsumed == m_FuelRequired)
+				{
+					OnFullyFueled.InvokeAll();
+				}
+
+				Generator->OnConsumedFuel.InvokeAll();
 				break;
 			}
 		}

@@ -4,6 +4,7 @@
 #include "File.hpp"
 #include "Invoker.hpp"
 
+#include "AudioPopulator.hpp"
 #include "CameraSystem.hpp"
 #include "GameplaySystem.hpp"
 #include "SceneLoader.hpp"
@@ -29,6 +30,7 @@ int main( int argc, char** argv )
 		StartingMap = Path( argv[1] );
 	else StartingMap = TilemapLevels[0];
 	
+	AP_.Global();
 	GameplaySystem::StartMatch( StartingMap );
 
 	Action<> GameLoop = [&]()

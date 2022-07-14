@@ -38,6 +38,11 @@ public:
 
 	Pathfinder( const Atlas& a_Atlas )
 		: m_Atlas( &a_Atlas )
+		, m_CurrentIteration( 0 )
+		, m_SearchComplete( false )
+		, m_FoundGoal( false )
+		, m_InProgress( false )
+		, m_MaxIterations( -1 )
 	{ }
 
 	~Pathfinder()

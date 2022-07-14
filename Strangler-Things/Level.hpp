@@ -1,29 +1,28 @@
 #pragma once
+
 #include <sstream>
 #include <iostream>
 
+#include "Atlas.hpp"
 #include "File.hpp"
 #include "GameObject.hpp"
 #include "Math.hpp"
 
-#include "Atlas.hpp"
 
 enum class LevelObject : uint8_t
 {
-	ABYSS          = '.',
-	FLOOR          = ' ',
-	HIGH_WALL      = '#',
-	LOW_WALL       = '-',
-	EXIT           = '_',
-	PLAYER_START   = 'p',
-	TENTACLE_START = 't',
-	RANDOM         = '?',
-	FUEL           = 'f',
-	GENERATOR      = 'g',
-	BONUS          = 's'
+	ABYSS           = '.',
+	FLOOR           = ' ',
+	HIGH_WALL       = '#',
+	LOW_WALL        = '-',
+	HORIZONTAL_EXIT = '_',
+	PLAYER          = 'p',
+	TENTACLE_START  = 't',
+	RANDOM_BLOCKER  = '?',
+	FUEL            = 'f',
+	GENERATOR       = 'g',
+	BONUS           = 's',
 };
-
-
 
 class Level
 {

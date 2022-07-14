@@ -10,7 +10,9 @@
 #include "AudioSource.hpp"
 
 #include "Level.hpp"
-#include "SceneGraphicsPopulator.hpp"
+
+#include <iostream>
+
 
 GameObject SceneObj;
 
@@ -36,11 +38,11 @@ void LoadScene( const Path& a_TilemapPath )
 	if ( SceneObj.IsValid() )
 	{
 		GameObject::Destroy( SceneObj );
-		SceneObj = GameObject::Instantiate( "Scene"_N );
 	}
 
+	SceneObj = GameObject::Instantiate( "Scene"_N );
+
 	_STL_ASSERT( a_TilemapPath.IsFile(), "TilemapPath isn't pointing to a file" );
-	SceneGraphicsPopulator().Populate( SceneObj );
 
 	std::string TileMap = FileToString( a_TilemapPath );
 

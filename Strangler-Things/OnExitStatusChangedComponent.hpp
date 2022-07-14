@@ -7,17 +7,17 @@
 #include "Invoker.hpp"
 
 
-DefineComponent( HandleExitStatusChangedComponent, Component )
+DefineComponent( OnExitStatusChangedComponent, Component )
 {
 public:
-	void Init( Action<> a_Callback )
+	void Init( std::function< void() > a_Callback )
 	{
 		m_Callback = a_Callback;
-		GameplaySystem::OnExitStatusChanged += a_Callback;
+		GameplaySystem::OnExitStatusChanged += m_Callback;
 		m_Initd = true;
 	}
 
-	~IHandleExitStatusChangedComponent()
+	~IOnExitStatusChangedComponent()
 	{
 		if ( m_Initd )
 		{
@@ -27,6 +27,7 @@ public:
 
 private:
 	bool m_Initd;
-	Action<> m_Callback;
+	// TODO: Make Actions work here instead of std::functions
+	std::function< void() > m_Callback;
 
 };
