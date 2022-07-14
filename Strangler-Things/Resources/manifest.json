@@ -9,7 +9,7 @@
       "Path": "./Cylinder/cylinder.obj"
     },
     "plane": {
-      "Type": "mesh",
+      "Type": "prefab",
       "Path": "./Plane/plane.obj"
     },
     "buzz": {
