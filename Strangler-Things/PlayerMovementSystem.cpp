@@ -9,7 +9,7 @@
 
 void PlayerMovementSystem::Update()
 {
-	static float Speed = 2.0f;
+	static float Speed = 4.0f;
 	static float CollisionSize = 0.5f;
 
 	float D = Time::GetRealDeltaTime();

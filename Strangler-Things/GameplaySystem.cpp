@@ -1,13 +1,22 @@
+#include <vector>
+
 #include "File.hpp"
 
 #include "GameplaySystem.hpp"
 #include "Level.hpp"
 
 
+std::vector< Hash > GameplaySystem::s_OrderedLevels
+{
+	"Level1"_H,
+	"Level2"_H,
+	"Level3"_H
+};
+
 void GameplaySystem::StartLevel( Hash a_LevelName )
 {
 	s_I->m_PendingLevel = a_LevelName;
-	s_I->m_PendingTicks = 200;
+	s_I->m_PendingTicks = 3;
 
 	auto* CurLevel = Level::GetActiveLevel();
 	if ( CurLevel != nullptr )
@@ -18,10 +27,13 @@ void GameplaySystem::StartLevel( Hash a_LevelName )
 	{
 		s_I->StartPendingLevelNow();
 	}
+
 }
 
 GameplaySystem::GameplaySystem()
-	: m_PickUpSystem(), m_PendingTicks( 0 )
+	: m_PickUpSystem()
+	, m_LevelCompletionSystem()
+	, m_PendingTicks( 0 )
 {
 	s_I = this;
 
@@ -52,14 +64,17 @@ void GameplaySystem::Update()
 	m_PickUpSystem.Update();
 	m_TentacleGrowthSystem.Update();
 	m_LateGameplayUpdateSystem.Update();
+	m_LevelCompletionSystem.Update();
 
 }
 
 void GameplaySystem::StartPendingLevelNow()
 {
 	Level::SetActiveLevel( m_PendingLevel );
-	m_GeneratorSystem.InitForNewLevel();
 
 	m_PendingLevel = ""_H;
+
+	s_I->m_GeneratorSystem.InitForNewLevel();
+	s_I->m_LevelCompletionSystem.InitForNewLevel();
 
 }

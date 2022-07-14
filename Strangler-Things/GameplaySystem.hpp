@@ -1,8 +1,11 @@
 #pragma once
 
+#include <vector>
+
 #include "Atlas.hpp"
 #include "GeneratorSystem.hpp"
 #include "LateGameplayUpdateSystem.hpp"
+#include "LevelCompletionSystem.hpp"
 #include "PickUpSystem.hpp"
 #include "PlayerMovementSystem.hpp"
 #include "RestartLevelSystem.hpp"
@@ -15,6 +18,10 @@ class GameplaySystem
 {
 public:
 	static void StartLevel( Hash );
+	inline static const std::vector< Hash > GetOrderedLevels()
+	{
+		return s_OrderedLevels;
+	}
 
 	GameplaySystem();
 
@@ -22,9 +29,11 @@ public:
 
 private:
 	inline static GameplaySystem* s_I;
+	static std::vector< Hash > s_OrderedLevels;
 
 	GeneratorSystem m_GeneratorSystem;
 	LateGameplayUpdateSystem m_LateGameplayUpdateSystem;
+	LevelCompletionSystem m_LevelCompletionSystem;
 	PickUpSystem m_PickUpSystem;
 	PlayerMovementSystem m_PlayerMovementSystem;
 	RestartLevelSystem m_RestartLevelSystem;

@@ -13,6 +13,7 @@ DefineComponent( PlayerComponent, Component )
 	friend PlayerMovementSystem;
 
 public:
+	Delegate<> OnReachedExit;
 	Delegate<> OnPickedUpObject;
 	Delegate<> OnDroppedObject;
 	float TimeSpentWalking = 0.0f;

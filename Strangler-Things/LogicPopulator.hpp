@@ -2,6 +2,7 @@
 
 #include "Atlas.hpp"
 #include "CameraSystem.hpp"
+#include "ExitComponent.hpp"
 #include "GameplaySystem.hpp"
 #include "GameObject.hpp"
 #include "GeneratorComponent.hpp"
@@ -18,6 +19,8 @@ public:
 	void Scene( GameObject a_Object ) { };
 	void HorizontalExit( GameObject a_Object )
 	{
+		a_Object.AddComponent< ExitComponent >();
+
 		Vector3Int Coord = a_Object.GetTransform()->GetGlobalPosition();
 
 		GameObject::Instantiate( a_Object )
