@@ -19,13 +19,13 @@ std::map< LevelObject, std::tuple< Action< GameObject >, Action< GameObject >, A
 	std::make_pair( LevelObject::FLOOR,           std::make_tuple( Action< GameObject >(),                                       Action< GameObject >( GP, &GraphicsPopulator::Floor ),          Action< GameObject >(),                                       false ) ),
 	std::make_pair( LevelObject::HIGH_WALL,       std::make_tuple( Action< GameObject >( LP_, &LogicPopulator::HighWall ),       Action< GameObject >( GP, &GraphicsPopulator::HighWall ),       Action< GameObject >(),                                       false ) ),
 	std::make_pair( LevelObject::LOW_WALL,        std::make_tuple( Action< GameObject >( LP_, &LogicPopulator::LowWall ),        Action< GameObject >( GP, &GraphicsPopulator::LowWall ),        Action< GameObject >(),                                       false ) ),
-	std::make_pair( LevelObject::RANDOM_BLOCKER,  std::make_tuple( Action< GameObject >( LP_, &LogicPopulator::RandomBlocker ),  Action< GameObject >( GP, &GraphicsPopulator::RandomBlocker ),  Action< GameObject >(),                                       true  ) ),
-	std::make_pair( LevelObject::PLAYER,          std::make_tuple( Action< GameObject >( LP_, &LogicPopulator::Player ),         Action< GameObject >( GP, &GraphicsPopulator::Player ),         Action< GameObject >( AP_, &AudioPopulator::Player ),         true  ) ),
-	std::make_pair( LevelObject::HORIZONTAL_EXIT, std::make_tuple( Action< GameObject >( LP_, &LogicPopulator::HorizontalExit ), Action< GameObject >( GP, &GraphicsPopulator::HorizontalExit ), Action< GameObject >( AP_, &AudioPopulator::HorizontalExit ), true  ) ),
-	std::make_pair( LevelObject::FUEL,            std::make_tuple( Action< GameObject >( LP_, &LogicPopulator::Fuel ),           Action< GameObject >( GP, &GraphicsPopulator::Fuel ),           Action< GameObject >( AP_, &AudioPopulator::Fuel ),           true  ) ),
-	std::make_pair( LevelObject::GENERATOR,       std::make_tuple( Action< GameObject >( LP_, &LogicPopulator::Generator ),      Action< GameObject >( GP, &GraphicsPopulator::Generator ),      Action< GameObject >( AP_, &AudioPopulator::Generator ),      true  ) ),
-	std::make_pair( LevelObject::TENTACLE_START,  std::make_tuple( Action< GameObject >( LP_, &LogicPopulator::TentacleStart ),  Action< GameObject >( GP, &GraphicsPopulator::TentacleStart ),  Action< GameObject >( AP_, &AudioPopulator::TentacleStart ),  true  ) ),
-	std::make_pair( LevelObject::BONUS,           std::make_tuple( Action< GameObject >( LP_, &LogicPopulator::Bonus ),          Action< GameObject >( GP, &GraphicsPopulator::Bonus ),          Action< GameObject >( AP_, &AudioPopulator::Bonus ),          true  ) ),
+	std::make_pair( LevelObject::RANDOM_BLOCKER,  std::make_tuple( Action< GameObject >( LP_, &LogicPopulator::RandomBlocker ),  Action< GameObject >( GP, &GraphicsPopulator::RandomBlocker ),  Action< GameObject >(),                                       false ) ),
+	std::make_pair( LevelObject::PLAYER,          std::make_tuple( Action< GameObject >( LP_, &LogicPopulator::Player ),         Action< GameObject >( GP, &GraphicsPopulator::Player ),         Action< GameObject >( AP_, &AudioPopulator::Player ),         false  ) ),
+	std::make_pair( LevelObject::HORIZONTAL_EXIT, std::make_tuple( Action< GameObject >( LP_, &LogicPopulator::HorizontalExit ), Action< GameObject >( GP, &GraphicsPopulator::HorizontalExit ), Action< GameObject >( AP_, &AudioPopulator::HorizontalExit ), false  ) ),
+	std::make_pair( LevelObject::FUEL,            std::make_tuple( Action< GameObject >( LP_, &LogicPopulator::Fuel ),           Action< GameObject >( GP, &GraphicsPopulator::Fuel ),           Action< GameObject >( AP_, &AudioPopulator::Fuel ),           false  ) ),
+	std::make_pair( LevelObject::GENERATOR,       std::make_tuple( Action< GameObject >( LP_, &LogicPopulator::Generator ),      Action< GameObject >( GP, &GraphicsPopulator::Generator ),      Action< GameObject >( AP_, &AudioPopulator::Generator ),      false  ) ),
+	std::make_pair( LevelObject::TENTACLE_START,  std::make_tuple( Action< GameObject >( LP_, &LogicPopulator::TentacleStart ),  Action< GameObject >( GP, &GraphicsPopulator::TentacleStart ),  Action< GameObject >( AP_, &AudioPopulator::TentacleStart ),  false  ) ),
+	std::make_pair( LevelObject::BONUS,           std::make_tuple( Action< GameObject >( LP_, &LogicPopulator::Bonus ),          Action< GameObject >( GP, &GraphicsPopulator::Bonus ),          Action< GameObject >( AP_, &AudioPopulator::Bonus ),          false  ) ),
 };
 
 GameObject CreateTileGameObject( LevelObject a_ObjectType, Vector3Int a_Coord )
@@ -38,7 +38,7 @@ GameObject CreateTileGameObject( LevelObject a_ObjectType, Vector3Int a_Coord )
 
 	if ( std::get< 3 >( Populators[ a_ObjectType ] ) )
 	{
-		GP.Floor( NewMapObj );
+		//GP.Floor( NewMapObj );
 	}
 
 	return NewMapObj;

@@ -34,7 +34,6 @@ void GraphicsPopulator::HorizontalExit( GameObject a_Object ) { GraphicsPopulato
 void GraphicsPopulator::TentacleStart( GameObject a_Object ) { GraphicsPopulatorBase::TentacleStart( a_Object ); };
 void GraphicsPopulator::TentacleNode_( GameObject a_Object, TentacleNode* a_TentacleNode ) { GraphicsPopulatorBase::TentacleNode_( a_Object, a_TentacleNode ); };
 void GraphicsPopulator::Random( GameObject a_Object ) { GraphicsPopulatorBase::Random( a_Object ); };
-void GraphicsPopulator::Fuel( GameObject a_Object ) { GraphicsPopulatorBase::Fuel( a_Object ); };
 void GraphicsPopulator::Generator( GameObject a_Object ) { GraphicsPopulatorBase::Generator( a_Object ); };
 void GraphicsPopulator::Bonus( GameObject a_Object ) { GraphicsPopulatorBase::Bonus( a_Object ); };
 void GraphicsPopulator::RandomBlocker( GameObject a_Object ) { GraphicsPopulatorBase::RandomBlocker( a_Object ); };
@@ -132,7 +131,7 @@ void GraphicsPopulator::Player( GameObject a_Object )
 {
 	static ResourceHandle< Mesh > PlayerMesh = []()
 	{
-		return Resource::Load< Mesh >( "plane"_H );
+		return Resource::Load< Mesh >( "plane_mesh0"_H );
 	}( );
 
 	//auto plane = Resource::Load< Mesh >( "plane"_H );
@@ -147,6 +146,7 @@ void GraphicsPopulator::Player( GameObject a_Object )
 	Transform* NewTransform = NewPlayer.GetTransform();
 	NewTransform->SetParent( a_Object, false );
 	NewTransform->SetLocalScale( Vector3::One * 1.5f );
+	NewTransform->TranslateLocalY( 0.1f );
 
 	NewPlayer.AddComponent< OnLateGameplayUpdateComponent >()->Init( [NewPlayer, a_Object]()
 	{
@@ -236,3 +236,18 @@ void GraphicsPopulator::LowWall( GameObject a_Object )
 		SouthWallTransform->SetParent( a_Object, false );
 	}
 };
+
+
+//void GraphicsPopulator::Fuel( GameObject a_Object ) { GraphicsPopulatorBase::Fuel( a_Object ); };
+void GraphicsPopulator::Fuel( GameObject a_Object )
+{
+	static ResourceHandle< Prefab > FuelPrefab = []()
+	{
+		return Resource::Load< Prefab >( "fuel"_H );
+	}( );
+
+	GameObject Fuel = Prefab::Instantiate( *FuelPrefab );
+	auto FuelTransform = Fuel.GetTransform();
+	FuelTransform->SetParent( a_Object, false );
+	FuelTransform->SetLocalScale( Vector3::One * 0.3f );
+}
