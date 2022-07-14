@@ -5,7 +5,7 @@
 #include "LateGameplayUpdateSystem.hpp"
 #include "PickUpSystem.hpp"
 #include "PlayerMovementSystem.hpp"
-#include "TentacleGrowthSystem.hpp"
+#include "TentacleSystem.hpp"
 
 
 class Path;
@@ -26,6 +26,6 @@ private:
 	LateGameplayUpdateSystem m_LateGameplayUpdateSystem;
 	PickUpSystem m_PickUpSystem;
 	PlayerMovementSystem m_PlayerMovementSystem;
-	TentacleGrowthSystem m_TentacleGrowthSystem;
+	TentacleSystem m_TentacleGrowthSystem;
 
 };

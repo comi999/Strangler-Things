@@ -16,7 +16,7 @@
 #include "PlayerComponent.hpp"
 
 
-class TentacleGrowthSystem;
+class TentacleSystem;
 
 static std::array< Vector2Int, 4 > s_TentacleGrowthDirections
 {
@@ -140,7 +140,7 @@ private:
 
 DefineComponent( TentacleComponent, Component )
 {
-	friend TentacleGrowthSystem;
+	friend TentacleSystem;
 
 public:
 	void Init()

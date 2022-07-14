@@ -6,6 +6,8 @@
 DefineComponent( PickUpAbleComponent, Component )
 {
 public:
+	Delegate<> OnPickedUp;
+	Delegate<> OnDropped;
 	GameObject Holder;
 
 };

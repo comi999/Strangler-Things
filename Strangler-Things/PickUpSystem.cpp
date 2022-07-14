@@ -32,7 +32,10 @@ void PickUpSystem::Update()
 			PUTransform->SetParent( PlayerTfm->GetParent() );
 			PUTransform->SetLocalPosition( PlayerTfm->GetLocalPosition() );
 
-			Player->m_PickedUpObject.GetComponent< PickUpAbleComponent >()->Holder = GameObject( -1 );
+			auto* PU = Player->m_PickedUpObject.GetComponent< PickUpAbleComponent >();
+			PU->Holder = GameObject( -1 );
+			PU->OnDropped.InvokeAll();
+
 			Player->m_PickedUpObject = GameObject( -1 );
 			Player->OnDroppedObject.InvokeAll();
 		}
@@ -54,6 +57,8 @@ void PickUpSystem::Update()
 					PUTransform->SetLocalPosition( Vector3( 0.0f, PickUpOverheadHeight, 0.0f ) );
 
 					PickUpAble->Holder = PlayerObj;
+					PickUpAble->OnPickedUp.InvokeAll();
+
 					Player->m_PickedUpObject = PickUpObj;
 					Player->OnPickedUpObject.InvokeAll();
 					break;

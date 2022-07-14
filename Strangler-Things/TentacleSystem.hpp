@@ -1,7 +1,7 @@
 #pragma once
 
 
-class TentacleGrowthSystem
+class TentacleSystem
 {
 public:
 	void Update();
