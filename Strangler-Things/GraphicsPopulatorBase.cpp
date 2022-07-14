@@ -10,32 +10,7 @@ void GraphicsPopulatorBase::Scene( GameObject a_Object, Hash a_LevelName ) { };
 void GraphicsPopulatorBase::Abyss( GameObject a_Object ) { };
 void GraphicsPopulatorBase::Floor( GameObject a_Object )
 {
-	static ResourceHandle< Material > FloorMaterial = []()
-	{
-		Material Temp = Material::LitFlatColour;
-		Temp.SetName( "FloorMaterial"_N );
-		//Temp.AddTexture( "texture_diffuse"_N, Resource::Load< Texture2D >( "floor"_H ) );
-		Temp.SetProperty( "diffuse_colour"_H, Vector4( 0.2f, 0.1f, 0.4f, 1.0f ) );
-		Temp.SetShader( Shader::LitFlatColour );
-		return Temp;
-	}( );
-
-	static bool HasRun = [a_Object]()
-	{
-		Vector2 LevelSize = Level::GetActiveLevel()->GetLevelSize();
-		auto MidPoint = LevelSize / 2;
-
-
-		Prefab* Cube = Resource::Load< Prefab >( "plane"_H ).Assure();
-		GameObject NewFloor = Prefab::Instantiate( *Cube );
-		MeshRenderer* NewRenderer = NewFloor.GetComponentInChild< MeshRenderer >();
-		NewRenderer->SetMaterial( FloorMaterial );
-		Transform* NewTransform = NewFloor.GetTransform();
-		NewTransform->SetParent( a_Object, false );
-		NewTransform->SetLocalPosition( Vector3( MidPoint.x - 1.0f, 0.0f, MidPoint.y - 1.0f ) );
-		NewTransform->SetLocalScale( Vector3( MidPoint.x, 1.0f, MidPoint.y ) );
-		return true;
-	}( );
+	
 
 
 	

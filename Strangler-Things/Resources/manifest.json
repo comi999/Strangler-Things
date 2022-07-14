@@ -106,7 +106,7 @@
     },
     "menu_background": {
       "Type": "texture",
-      "Path": "Textures/UI/Menu Background.jpg"
+      "Path": "Textures/UI/Menu Background.png"
     },
     "play_button_active": {
       "Type": "texture",
@@ -207,6 +207,18 @@
     "fuel": {
       "Type": "prefab",
       "Path": "Fuel/fuel.obj"
+    },
+    "generator": {
+      "Type": "prefab",
+      "Path": "Generator/generator.obj"
+    },
+    "tentacle_left": {
+      "Type": "texture",
+      "Path": "Textures/Tentacle/Tentacle Left.png"
+    },
+    "tentacle_right": {
+      "Type": "texture",
+      "Path": "Textures/Tentacle/Tentacle Right.png"
     }
   }
 }

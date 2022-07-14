@@ -184,6 +184,9 @@ public:
 
 	}
 
+	float TextureFlipTimer = 0.0f;
+	bool TentacleOrientation = false;
+
 private:
 	static const int GROWTH_INTERVAL_SECONDS = 4.0f;
 
