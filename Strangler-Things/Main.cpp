@@ -8,6 +8,7 @@
 #include "CameraSystem.hpp"
 #include "Level.hpp"
 #include "GameplaySystem.hpp"
+#include "MenuSystem.hpp"
 
 
 int main( int argc, char** argv )
@@ -18,6 +19,7 @@ int main( int argc, char** argv )
 
 	CameraSystem CameraSystem;
 	GameplaySystem GameplaySystem{};
+	MenuSystem MenuSystem{};
 
 	Hash StartingLevel = "Level1"_H;
 	std::vector< std::pair< Hash, std::string > > Levels {
@@ -40,6 +42,7 @@ int main( int argc, char** argv )
 
 	Action<> GameLoop = [&]()
 	{
+		_MS.Update();
 		GameplaySystem.Update();
 		CameraSystem.Update();
 	};

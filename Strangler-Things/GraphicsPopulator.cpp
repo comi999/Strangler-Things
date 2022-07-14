@@ -11,10 +11,16 @@
 #include "OnLateGameplayUpdateComponent.hpp"
 #include "PlayerComponent.hpp"
 #include "OnFullyFueledChangedComponent.hpp"
-
+#include "MenuSystem.hpp"
 
 void GraphicsPopulator::Scene( GameObject a_Object, Hash a_LevelName )
 {
+	if ( a_LevelName == "Menu"_H )
+	{
+		_MS.Active = true;
+		return;
+	}
+
 	// Create Sun
 	GameObject SunObject = GameObject::Instantiate( "Sun"_N, a_Object );
 	Light* SunComponent = SunObject.AddComponent< Light >();
@@ -182,8 +188,8 @@ void GraphicsPopulator::Player( GameObject a_Object )
 	Transform* NewTransform = NewPlayer.GetTransform();
 	NewTransform->SetParent( a_Object, false );
 	NewTransform->SetLocalScale( Vector3::One * 1.3f );
-	NewTransform->TranslateLocalY( 0.6f );
-	NewTransform->RotateLocal( Vector3::Right * Math::Radians( 20.0f ) );
+	NewTransform->TranslateLocalY( 0.1f );
+	NewTransform->RotateLocal( Vector3::Right * Math::Radians( 00.0f ) );
 
 	NewPlayer.AddComponent< OnLateGameplayUpdateComponent >()->Init( [NewPlayer, a_Object]()
 	{
@@ -443,7 +449,7 @@ void GraphicsPopulator::HorizontalExit( GameObject a_Object )
 	GameObject NewDoorFace = GameObject::Instantiate( a_Object );
 	auto* NewDoorFaceTransform = NewDoorFace.GetTransform();
 	NewDoorFaceTransform->RotateLocal( Vector3::Right * Math::Radians( 90.0f ) );
-	NewDoorFaceTransform->SetLocalPositionZ( -0.6f );
+	NewDoorFaceTransform->SetLocalPositionZ( -0.7f );
 	NewDoorFaceTransform->SetLocalScale( Vector3( 2.0f, 1.0f, 3.0f ) );
 	auto* NewDoorFaceRenderer = NewDoorFace.AddComponent< MeshRenderer >();
 	NewDoorFaceRenderer->SetMesh( DoorMesh0 );
