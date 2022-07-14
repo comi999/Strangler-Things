@@ -33,23 +33,27 @@ public:
 	static bool SetActiveLevel( Hash a_Name );
 	static void Preload( std::vector< std::pair< Hash, std::string > > a_Levels );
 	
-	Level( const std::string& a_Tilemap, Vector2UInt a_Dimensions );
+	Level( Hash a_Name, const std::string& a_Tilemap, Vector2UInt a_Dimensions );
 	Vector2UInt GetLevelSize() const;
 	LevelObject GetTile( Vector2UInt a_Coordinate ) const;
-	void ResetAtlas();
+	void Deactivate();
 
 	Atlas& GetAtlas();
 	const Atlas& GetAtlas() const;
+	const Hash GetName() const;
 
 private:
 
+	inline static std::map< Hash, Level > s_Levels;
+	inline static Level*                  s_ActiveLevel = nullptr;
+
 	static void CreateNewLevel( Hash a_Name, std::string a_LevelPath );
 
+	Hash        m_Name;
 	Vector2UInt m_LevelSize;
 	std::string m_LevelData;
 	Atlas       m_LevelAtlas;
 
-	inline static std::map< Hash, Level > s_Levels;
-	inline static Level*                  s_ActiveLevel;
+	void ResetAtlas();
 
 };

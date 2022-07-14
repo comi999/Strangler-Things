@@ -24,6 +24,11 @@ public:
 			.AddComponent< OnFullyFueledChangedComponent >( )
 			->Init([=]()
 			{
+				if ( !a_Object.IsValid() )
+				{
+					return;
+				}
+
 				if ( GeneratorSystem::IsFullyFueled() )
 				{
 					Level::GetActiveLevel()->GetAtlas().EnableNode( Coord.swizzle.xz );

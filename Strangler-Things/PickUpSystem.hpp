@@ -8,7 +8,4 @@ class PickUpSystem
 public:
 	void Update();
 
-private:
-	bool m_WasSpaceDown;
-
 };

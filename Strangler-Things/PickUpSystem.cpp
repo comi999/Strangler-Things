@@ -11,9 +11,12 @@ void PickUpSystem::Update()
 	static float MaxPickUpDistanceSq = Math::Pow( 1.0f, 2.0f );
 	static float PickUpOverheadHeight = 1.33f;
 
+	static bool WasSpaceDown = false;
+
+	// TODO: Make IsKeyPressed work!
 	bool KeyPressedNow = Input::IsKeyDown( KeyCode::Space );
-	bool KeyJustPressed = KeyPressedNow && !m_WasSpaceDown;
-	m_WasSpaceDown = KeyPressedNow;
+	bool KeyJustPressed = KeyPressedNow && !WasSpaceDown;
+	WasSpaceDown = KeyPressedNow;
 	if ( ! KeyJustPressed )
 	{
 		return;

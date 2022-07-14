@@ -100,6 +100,11 @@ void GraphicsPopulatorBase::HorizontalExit( GameObject a_Object )
 		.AddComponent< OnFullyFueledChangedComponent >( )
 		->Init([=]()
 		{
+			if ( !a_Object.IsValid() )
+			{
+				return;
+			}
+
 			Transform* ClosedCube = ( (GameObject)ClosedCubeObj ).GetTransform();
 
 			if ( GeneratorSystem::IsFullyFueled() )

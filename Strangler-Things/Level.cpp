@@ -38,8 +38,9 @@ GameObject CreateTileGameObject( LevelObject a_ObjectType, Vector3Int a_Coord )
 	return NewMapObj;
 }
 
-Level::Level( const std::string& a_Tilemap, Vector2UInt a_Dimensions )
-	: m_LevelAtlas( a_Dimensions )
+Level::Level( Hash a_Hash, const std::string& a_Tilemap, Vector2UInt a_Dimensions )
+	: m_Name( a_Hash )
+	, m_LevelAtlas( a_Dimensions )
 	, m_LevelSize( a_Dimensions )
 	, m_LevelData( a_Tilemap )
 {}
@@ -116,7 +117,7 @@ void Level::CreateNewLevel( Hash a_Name, std::string a_LevelPath )
 		}
 	}
 
-	s_Levels.emplace( std::piecewise_construct, std::forward_as_tuple( a_Name ), std::forward_as_tuple( TilemapString, LevelSize ) );
+	s_Levels.emplace( std::piecewise_construct, std::forward_as_tuple( a_Name ), std::forward_as_tuple( a_Name, TilemapString, LevelSize ) );
 }
 
 void Level::Preload( std::vector< std::pair< Hash, std::string > > a_Levels )
@@ -136,10 +137,12 @@ bool Level::SetActiveLevel( Hash a_Name )
 		return false;
 	}
 	
-	if ( LevelGameObject.IsValid() )
+	if ( s_ActiveLevel != nullptr )
 	{
-		GameObject::Destroy( LevelGameObject );
+		// Things will probably go wrong here! It's meant to be deactivated in advance via GameplaySystem
+		s_ActiveLevel->Deactivate();
 	}
+
 	LevelGameObject = GameObject::Instantiate( "Level"_N );
 
 	s_ActiveLevel = &Iter->second;
@@ -168,6 +171,16 @@ bool Level::SetActiveLevel( Hash a_Name )
 	return true;
 }
 
+void Level::Deactivate()
+{
+	if ( LevelGameObject.IsValid() )
+	{
+		GameObject::Destroy( LevelGameObject );
+	}
+
+	s_ActiveLevel = nullptr;
+}
+
 
 void Level::ResetAtlas()
 {
@@ -182,6 +195,11 @@ Atlas& Level::GetAtlas()
 const Atlas& Level::GetAtlas() const
 {
 	return m_LevelAtlas;
+}
+
+const Hash Level::GetName() const
+{
+	return m_Name;
 }
 
 Level* Level::GetLevel( Hash a_Name )

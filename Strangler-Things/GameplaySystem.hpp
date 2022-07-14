@@ -5,6 +5,7 @@
 #include "LateGameplayUpdateSystem.hpp"
 #include "PickUpSystem.hpp"
 #include "PlayerMovementSystem.hpp"
+#include "RestartLevelSystem.hpp"
 #include "TentacleSystem.hpp"
 
 
@@ -26,6 +27,12 @@ private:
 	LateGameplayUpdateSystem m_LateGameplayUpdateSystem;
 	PickUpSystem m_PickUpSystem;
 	PlayerMovementSystem m_PlayerMovementSystem;
+	RestartLevelSystem m_RestartLevelSystem;
 	TentacleSystem m_TentacleGrowthSystem;
+
+	Hash m_PendingLevel;
+	int m_PendingTicks;
+
+	void StartPendingLevelNow();
 
 };
