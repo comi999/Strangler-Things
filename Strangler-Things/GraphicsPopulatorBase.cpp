@@ -8,7 +8,24 @@
 
 void GraphicsPopulatorBase::Scene( GameObject a_Object, Hash a_LevelName ) { };
 void GraphicsPopulatorBase::Abyss( GameObject a_Object ) { };
-void GraphicsPopulatorBase::Floor( GameObject a_Object ) { };
+void GraphicsPopulatorBase::Floor( GameObject a_Object )
+{
+	static ResourceHandle< Material > FloorMaterial = []()
+	{
+		Material Temp = Material::LitFlatColour;
+		Temp.SetName( "FloorMaterial"_N );
+		Temp.SetProperty( "diffuse_colour"_H, ( Vector4 )Colour::GREY );
+		Temp.SetShader( Shader::LitFlatColour );
+		return Temp;
+	}( );
+
+	Prefab* Cube = Resource::Load< Prefab >( "plane"_H ).Assure();
+	GameObject NewFloor = Prefab::Instantiate( *Cube );
+	MeshRenderer* NewRenderer = NewFloor.GetComponentInChild< MeshRenderer >();
+	NewRenderer->SetMaterial( FloorMaterial );
+	Transform* NewTransform = NewFloor.GetTransform();
+	NewTransform->SetParent( a_Object, false );
+};
 void GraphicsPopulatorBase::HighWall( GameObject a_Object )
 {
 	static ResourceHandle< Material > HighWallMaterial = []()
@@ -100,11 +117,6 @@ void GraphicsPopulatorBase::HorizontalExit( GameObject a_Object )
 		.AddComponent< OnFullyFueledChangedComponent >( )
 		->Init([=]()
 		{
-			if ( !a_Object.IsValid() )
-			{
-				return;
-			}
-
 			Transform* ClosedCube = ( (GameObject)ClosedCubeObj ).GetTransform();
 
 			if ( GeneratorSystem::IsFullyFueled() )
@@ -174,7 +186,13 @@ void GraphicsPopulatorBase::TentacleNode_( GameObject a_Object, TentacleNode* a_
 
 	Transform* NewTransform = NewTentacle.GetTransform();
 	NewTransform->SetParent( a_Object, false );
-	NewTransform->SetLocalScaleY( 0.5f );
+	NewTransform->SetLocalScale( Vector3( 0.3f, 1.0f, 0.3f ) );
+	// NewTransform->RotateLocal( Quaternion( Vector3( Math::Radians( 90.0f ), 0.0f, 0.0f ) ) );
+
+	RotationOrder Order = RotationOrder::XYZ;
+	Vector3 Rot = Vector3( Math::Radians( -90.0f ), Math::ATan< float >( -a_TentacleNode->PreviousDirection.x, a_TentacleNode->PreviousDirection.y ), 0.0f );
+	Quaternion Q = Quaternion::ToQuaternion( Rot, Order );
+	NewTransform->SetGlobalRotation( Q );
 };
 void GraphicsPopulatorBase::Random( GameObject a_Object ) { };
 void GraphicsPopulatorBase::Fuel( GameObject a_Object )
