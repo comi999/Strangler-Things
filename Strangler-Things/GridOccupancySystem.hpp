@@ -5,6 +5,7 @@
 
 #include "Math.hpp"
 
+#include "Level.hpp"
 
 namespace std
 {
@@ -33,17 +34,20 @@ class GridOccupancySystem
 public:
 	void RegisterOccupied( Vector3Int a_Coord )
 	{
-		m_OccupiedCoords.insert( a_Coord );
+		//m_OccupiedCoords.insert( a_Coord );
+		Level::GetActiveLevel()->GetAtlas().DisableNode( a_Coord.swizzle.xz );
 	}
 
 	void DeregisterOccupied( Vector3Int a_Coord )
 	{
-		m_OccupiedCoords.erase( a_Coord );
+		//m_OccupiedCoords.erase( a_Coord );
+		Level::GetActiveLevel()->GetAtlas().EnableNode( a_Coord.swizzle.xz );
 	}
 
 	bool CoordIsOccupied( Vector3Int a_Coord )
 	{
-		return m_OccupiedCoords.find( a_Coord ) != m_OccupiedCoords.end();
+		//return m_OccupiedCoords.find( a_Coord ) != m_OccupiedCoords.end();
+		return !Level::GetActiveLevel()->GetAtlas().CheckNode( a_Coord.swizzle.xz );
 	}
 
 	bool CoordIsOccupied( Vector3 a_Position )
@@ -57,6 +61,6 @@ public:
 	}
 
 private:
-	std::unordered_set< Vector3Int > m_OccupiedCoords;
+	//std::unordered_set< Vector3Int > m_OccupiedCoords;
 
 };

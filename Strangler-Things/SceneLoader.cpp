@@ -10,6 +10,7 @@
 #include "AudioSource.hpp"
 
 #include "Level.hpp"
+#include "SceneGraphicsPopulator.hpp"
 
 GameObject SceneObj;
 
@@ -67,11 +68,11 @@ void LoadScene( const Path& a_TilemapPath )
 	// Compile all rows into level data.
 	TileMap.clear();
 	
-	for ( auto& Row : Rows )
+	for ( auto Begin = Rows.rbegin(), End = Rows.rend(); Begin != End; ++Begin )
 	{
-		TileMap += Row;
+		TileMap += *Begin;
 	}
-
-	Level SceneLevel( TileMap, LevelSize );
-	SceneLevel.PopulateScene( SceneObj );
+	Level* Level1 = Level::CreateNewLevel( "Level1"_H, TileMap, LevelSize );
+	Level::SetActiveLevel( "Level1"_H );
+	Level1->PopulateScene( SceneObj );
 }

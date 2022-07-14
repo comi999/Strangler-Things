@@ -84,6 +84,9 @@ public:
 		BLNode->East() = GetNode( { 1u, 0u } );
 		BRNode->North() = GetNode( { m_Size.x - 1, 1u } );
 		BRNode->West() = GetNode( { m_Size.x - 2, 0u } );
+
+
+		auto* n = GetNode( {16,0});
 	}
 
 	inline bool CheckNode( Vector2UInt a_Coordinate ) const
@@ -144,28 +147,28 @@ public:
 		// Break link North
 		if ( a_Coordinate.y < m_Size.y - 1 )
 		{
-			ThisNode->North()->South() = nullptr;
+			if ( ThisNode->North() ) ThisNode->North()->South() = nullptr;
 			ThisNode->North() = nullptr;
 		}
 
 		// Break link East
 		if ( a_Coordinate.x < m_Size.x - 1 )
 		{
-			ThisNode->East()->West() = nullptr;
+			if ( ThisNode->East() ) ThisNode->East()->West() = nullptr;
 			ThisNode->East() = nullptr;
 		}
 
 		// Break link South
 		if ( a_Coordinate.y > 0 )
 		{
-			ThisNode->South()->North() = nullptr;
+			if ( ThisNode->South() ) ThisNode->South()->North() = nullptr;
 			ThisNode->South() = nullptr;
 		}
 
 		// Break link West
 		if ( a_Coordinate.x > 0 )
 		{
-			ThisNode->West()->East() = nullptr;
+			if ( ThisNode->West() ) ThisNode->West()->East() = nullptr;
 			ThisNode->West() = nullptr;
 		}
 		
