@@ -26,8 +26,7 @@ int main( int argc, char** argv )
 		std::make_pair( "Menu"_H,   ""                              ),
 		std::make_pair( "Level1"_H, "./Resources/Levels/Level1.txt" ),
 		std::make_pair( "Level2"_H, "./Resources/Levels/Level2.txt" ),
-		std::make_pair( "Level3"_H, "./Resources/Levels/Level3.txt" ),
-		std::make_pair( "Level4"_H, "./Resources/Levels/Bilal1.txt" )
+		std::make_pair( "Level3"_H, "./Resources/Levels/Level3.txt" )
 	};
 
 	if ( argc >= 2 )

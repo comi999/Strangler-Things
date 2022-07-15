@@ -10,8 +10,7 @@ std::vector< Hash > GameplaySystem::s_OrderedLevels
 {
 	"Level1"_H,
 	"Level2"_H,
-	"Level3"_H,
-	"Level4"_H
+	"Level3"_H
 };
 
 void GameplaySystem::StartLevel( Hash a_LevelName )
