@@ -76,6 +76,8 @@ public:
 			MenuController->Init( MenuObject );
 		}
 
+		MenuController->Tick( Progress );
+
 		if (
 			Input::IsKeyDown( KeyCode::Space ) ||
 			Input::IsKeyDown( KeyCode::Enter )

@@ -18,7 +18,7 @@ if ( !##Name##_texture.IsLoaded() ) \
 			Material BackgroundMat;\
 			BackgroundMat.SetName( "BackgroundMaterial"_N );\
 			BackgroundMat.AddTexture( "texture_diffuse"_N, ##Name##_texture );\
-			BackgroundMat.SetShader( Shader::Diffuse );\
+			BackgroundMat.SetShader( Shader::Spotlight );\
 			##Name##_material = BackgroundMat;\
 		}\
 
@@ -72,7 +72,8 @@ public:
 
 	void Tick( float a_Progress )
 	{
-		
+		Light* Sun = Light::GetSun();
+		Sun->SetDirection( Math::Normalize( Vector3::Down + Vector3::Left * Math::Sin( a_Progress ) ) );
 	}
 
 private:

@@ -16,6 +16,13 @@
 
 void GraphicsPopulator::Scene( GameObject a_Object, Hash a_LevelName )
 {
+	// Create Sun
+	GameObject SunObject = GameObject::Instantiate( "Sun"_N, a_Object );
+	Light* SunComponent = SunObject.AddComponent< Light >();
+	SunComponent->SetDirection( Vector3::Down );
+	SunComponent->SetAmbient( Vector3::Up * 3.0f );
+	Light::SetSun( SunComponent );
+
 	MenuSystem::I().Active = a_LevelName == "Menu"_H;
 
 	if ( MenuSystem::I().Active )
