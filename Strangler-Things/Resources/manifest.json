@@ -48,6 +48,26 @@
       "Type": "sfxrclip",
       "Path": "Sfx/siren_warning.sfs"
     },
+    "star": {
+      "Type": "sfxrclip",
+      "Path": "Sfx/star.sfs"
+    },
+    "enter": {
+      "Type": "sfxrclip",
+      "Path": "Sfx/star.sfs"
+    },
+    "select": {
+      "Type": "sfxrclip",
+      "Path": "Sfx/select.sfs"
+    },
+    "walking_stairs": {
+      "Type": "sfxrclip",
+      "Path": "Sfx/walking_stairs.sfs"
+    },
+    "portal": {
+      "Type": "sfxrclip",
+      "Path": "Sfx/portal.sfs"
+    },
     "arrow_back_active": {
       "Type": "texture",
       "Path": "Textures/UI/Arrow Back Active.jpg"
