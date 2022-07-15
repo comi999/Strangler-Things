@@ -24,8 +24,15 @@ void GraphicsPopulator::Scene( GameObject a_Object, Hash a_LevelName )
 	}
 
 	// Create Sun
-	GameObject SunObject = GameObject::Instantiate( "Sun"_N, a_Object );
-	Light* SunComponent = SunObject.AddComponent< Light >();
+	GameObject SunObject;
+	Light* SunComponent = SunObject.GetComponent< Light >();
+
+	if ( !SunComponent )
+	{
+		SunObject = GameObject::Instantiate( "Sun"_N, a_Object );
+		SunComponent = SunObject.AddComponent< Light >();
+	}
+	
 	SunComponent->SetDirection( Math::Normalize( Vector3::Down + Vector3::Right + Vector3::Forward * 0.3f ) );
 	SunComponent->SetAmbient( Vector3::One );
 	Light::SetSun( SunComponent );

@@ -22,7 +22,7 @@ public:
 
 		if ( !SplashShader.IsLoaded() )
 		{
-			SplashShader = Shader( "splash_shader"_N, "Vertex_Texel", "Fragment_Splash" );
+			SplashShader = Shader::Spotlight;// Shader( "splash_shader"_N, "Vertex_Texel", "Fragment_Splash" );
 		}
 
 		if ( !SplashTexture.IsLoaded() )
@@ -53,8 +53,20 @@ public:
 
 	void TickSplash( float a_Progress )
 	{
-		float Intensity = Math::Abs( 0.8f * Math::Sin( a_Progress * 0.2f * Math::Radians( 180.0f ) ) );
-		SplashMaterial->SetProperty( "intensity"_H, Intensity );
+		/*float Intensity = Math::Abs( 0.8f * Math::Sin( a_Progress * 0.2f * Math::Radians( 180.0f ) ) );
+		SplashMaterial->SetProperty( "intensity"_H, Intensity );*/
+
+		Light* Sun = Light::GetSun();
+
+		if ( !Sun )
+		{
+			GameObject SunObject = GameObject::Instantiate();
+			Sun = SunObject.AddComponent< Light >();
+			Light::SetSun( Sun );
+		}
+
+		Sun->SetAmbient( Vector3::Up * 3.0f );
+		Sun->SetDirection( Math::Normalize( Vector3::Down + Vector3::Left * Math::Sin( a_Progress ) ) );
 	}
 
 private:
