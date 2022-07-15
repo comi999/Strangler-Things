@@ -29,11 +29,9 @@ public:
 	{
 		static float Progress = 0.0f;
 
-		if ( !Active ) return;
 
 		if ( Reset )
 		{
-			Reset = false;
 			Progress = 0.0f;
 
 			if ( MenuObject.IsValid() )
@@ -41,8 +39,12 @@ public:
 				GameObject::Destroy( MenuObject );
 			}
 
-			MenuObject = GameObject::Instantiate();
+			//MenuObject = GameObject::Instantiate();
+			return;
 		}
+
+		
+		if ( !Active ) return;
 
 		Progress += Time::GetRealDeltaTime();
 
@@ -79,7 +81,8 @@ public:
 			Input::IsKeyDown( KeyCode::Enter )
 		)
 		{
-			GameplaySystem::StartLevel(
+			Reset = true;
+			 GameplaySystem::StartLevel(
 				GameplaySystem::GetOrderedLevels().front()
 			);
 		}
