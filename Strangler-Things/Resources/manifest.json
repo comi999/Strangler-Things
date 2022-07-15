@@ -219,6 +219,10 @@
     "tentacle_right": {
       "Type": "texture",
       "Path": "Textures/Tentacle/Tentacle Right.png"
+    },
+    "splash": {
+      "Type": "texture",
+      "Path": "Textures/Logo/Lengine.png"
     }
   }
 }
