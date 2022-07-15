@@ -21,7 +21,7 @@ int main( int argc, char** argv )
 	GameplaySystem GameplaySystem{};
 	MenuSystem MenuSystem{};
 
-	Hash StartingLevel = "Level1"_H;
+	Hash StartingLevel = "Menu"_H;
 	std::vector< std::pair< Hash, std::string > > Levels {
 		std::make_pair( "Menu"_H,   ""                              ),
 		std::make_pair( "Level1"_H, "./Resources/Levels/Level1.txt" ),

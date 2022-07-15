@@ -1,5 +1,7 @@
 #pragma once
+
 #include "SplashScreenController.hpp"
+#include "MainMenuController.hpp"
 
 class MenuSystem
 {
@@ -13,7 +15,7 @@ public:
 	void Update()
 	{
 		static float Progress = 0.0f;
-		if ( !Active ) return;
+		//if ( !Active ) return;
 
 		if ( Reset )
 		{
@@ -42,6 +44,20 @@ public:
 
 			SplashScreen->TickSplash( Progress - 0.0f );
 			return;
+		}
+
+		if ( MenuObject.IsValid() )
+		{
+			GameObject::Destroy( MenuObject );
+			MenuObject = GameObject::Instantiate();
+		}
+
+		auto* MenuController = MenuObject.GetComponent< MainMenuController >();
+
+		if ( !MenuController )
+		{
+			MenuController = MenuObject.AddComponent< MainMenuController >();
+			MenuController->Init( MenuObject );
 		}
 	}
 

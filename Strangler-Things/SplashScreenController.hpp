@@ -17,11 +17,12 @@ public:
 		if ( !SplashMesh.IsLoaded() )
 		{
 			SplashMesh = Resource::Load< Mesh >( "plane_mesh0"_H );
+			SplashMesh->SetName( "something"_N );
 		}
 
 		if ( !SplashShader.IsLoaded() )
 		{
-			SplashShader = Shader( "splash_shader"_N, "Vertex_Default", "Fragment_Splash" );
+			SplashShader = Shader( "splash_shader"_N, "Vertex_Texel", "Fragment_Splash" );
 		}
 
 		if ( !SplashTexture.IsLoaded() )
@@ -31,28 +32,38 @@ public:
 
 		if ( !SplashMaterial.IsLoaded() )
 		{
-			SplashMaterial = Material();
-			SplashMaterial->SetName( "SplashMaterial"_N );
-			SplashMaterial->AddProperty( "intensity"_N, 0.0f );
-			SplashMaterial->AddTexture( "texture_diffuse"_N, SplashTexture );
-			SplashMaterial->SetShader( *SplashShader );
+			Material Mat;
+			Mat.SetName( "SplashMat"_N );
+			Mat.AddProperty( "intensity"_N, 0.0f );
+			Mat.AddTexture( "texture_diffuse"_N, SplashTexture );
+			Mat.SetShader( *SplashShader );
+
+			SplashMaterial = Mat;
 		}
 
-		MenuObject = a_MenuObject;
-		MeshRenderer* Renderer = MenuObject.AddComponent< MeshRenderer >();
+		MeshRenderer* Renderer = a_MenuObject.AddComponent< MeshRenderer >();
 		Renderer->SetMaterial( SplashMaterial );
 		Renderer->SetMesh( SplashMesh );
+
+		auto* MenuTransform = a_MenuObject.GetTransform();
+		MenuTransform->SetGlobalPosition( Vector3::Backward * 3.5f );
+		//MenuTransform->SetGlobalScale( Vector3::One * 10.0f );
+		MenuTransform->SetLocalScale( Vector3( -11.0f, 1.0f, -6.5f ) );
+
+
+		auto* CamTransform = Camera::GetMainCamera()->GetOwner()->GetTransform();
+		CamTransform->SetLocalPosition( Vector3::Up * 5.0f );
+		CamTransform->SetLocalRotation( Vector3::Right * Math::Radians( -90.0f ) );
 	}
 
 	void TickSplash( float a_Progress )
 	{
-		float Intensity = 0.2f + Math::Abs( 0.8f * Math::Sin( a_Progress * 0.2f * Math::Radians( 180.0f ) ) );
+		float Intensity = Math::Abs( 0.8f * Math::Sin( a_Progress * 0.2f * Math::Radians( 180.0f ) ) );
 		SplashMaterial->SetProperty( "intensity"_H, Intensity );
 	}
 
 private:
 
-	GameObject MenuObject;
 	inline static ResourceHandle< Mesh > SplashMesh;
 	inline static ResourceHandle< Material > SplashMaterial;
 	inline static ResourceHandle< Texture2D > SplashTexture;
