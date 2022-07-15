@@ -8,6 +8,24 @@
 #include "Transform.hpp"
 #include "MeshRenderer.hpp"
 
+#define MakeMatPair( Name ) \
+if ( !##Name##_texture.IsLoaded() ) \
+		{\
+##Name##_texture = Resource::Load< Texture2D >( #Name##_H );\
+		}\
+		if ( !##Name##_material.IsLoaded() )\
+		{\
+			Material BackgroundMat;\
+			BackgroundMat.SetName( "BackgroundMaterial"_N );\
+			BackgroundMat.AddTexture( "texture_diffuse"_N, ##Name##_texture );\
+			BackgroundMat.SetShader( Shader::Diffuse );\
+			##Name##_material = BackgroundMat;\
+		}\
+
+#define MakeMatPairDec( Name )\
+inline static ResourceHandle< Material > ##Name##_material;\
+inline static ResourceHandle< Texture2D > ##Name##_texture;\
+
 DefineComponent( MainMenuController, Component )
 {
 public:
@@ -20,38 +38,15 @@ public:
 			BackgroundMesh->SetName( "background_mesh"_N );
 		}
 
-		if ( !BackgroundTexture.IsLoaded() )
-		{
-			BackgroundTexture = Resource::Load< Texture2D >( "menu_background"_H );
-		}
+		MakeMatPair( menu_background );
+		MakeMatPair( play_button_active );
+		MakeMatPair( play_button );
+		MakeMatPair( instruction_button_active );
+		MakeMatPair( instruction_button );
 
-		if ( !BackgroundMaterial.IsLoaded() )
-		{
-			Material BackgroundMat;
-			BackgroundMat.SetName( "BackgroundMaterial"_N );
-			BackgroundMat.AddTexture( "texture_diffuse"_N, BackgroundTexture );
-			BackgroundMat.SetShader( Shader::Diffuse );
-
-			BackgroundMaterial = BackgroundMat;
-		}
-
-		if ( !MenuItem1Texture.IsLoaded() )
-		{
-			MenuItem1Texture = Resource::Load< Texture2D >( "play_button_active"_H );
-		}
-
-		if ( !MenuItem1Material.IsLoaded() )
-		{
-			Material MenuItem1Mat;
-			MenuItem1Mat.SetName( "MenuItem1Texture"_N );
-			MenuItem1Mat.AddTexture( "texture_diffuse"_N, MenuItem1Texture );
-			MenuItem1Mat.SetShader( Shader::Diffuse );
-
-			MenuItem1Material = MenuItem1Mat;
-		}
-
+		// Background and camera
 		MeshRenderer* Renderer = MenuObj.AddComponent< MeshRenderer >();
-		Renderer->SetMaterial( BackgroundMaterial );
+		Renderer->SetMaterial( menu_background_material );
 		Renderer->SetMesh( BackgroundMesh );
 		auto* MenuTransform = MenuObj.GetTransform();
 		MenuTransform->SetGlobalPosition( Vector3::Backward * 3.0f );
@@ -59,11 +54,20 @@ public:
 
 		GameObject MenuItem1 = GameObject::Instantiate( MenuObj );
 		MeshRenderer* Renderer1 = MenuItem1.AddComponent< MeshRenderer >();
-		Renderer1->SetMaterial( BackgroundMaterial );
+		Renderer1->SetMaterial( play_button_active_material );
 		Renderer1->SetMesh( BackgroundMesh );
 		auto* MenuTransform1 = MenuItem1.GetTransform();
-		MenuTransform1->SetGlobalPosition( Vector3::Backward * 3.0f );// +Vector3::Up * 0.5f );
-		MenuTransform1->SetGlobalScale( Vector3( 3.0f, 1.0f, -1.0f ) );
+		MenuTransform1->SetGlobalPosition( Vector3::Up * 0.5f );
+		MenuTransform1->SetGlobalScale( Vector3( 0.45f, 1.0f, -0.13f ) );
+
+		// Instruction button
+		GameObject MenuItem2 = GameObject::Instantiate( MenuObj );
+		MeshRenderer* Renderer2 = MenuItem2.AddComponent< MeshRenderer >();
+		Renderer2->SetMaterial( instruction_button_active_material );
+		Renderer2->SetMesh( BackgroundMesh );
+		auto* MenuTransform2 = MenuItem2.GetTransform();
+		MenuTransform2->SetGlobalPosition( Vector3::Up * 0.5f + Vector3::Backward * -0.35f );
+		MenuTransform2->SetGlobalScale( Vector3( 0.45f, 1.0f, -0.13f ) );
 	}
 
 	void Tick( float a_Progress )
@@ -74,9 +78,10 @@ public:
 private:
 
 	inline static ResourceHandle< Mesh     > BackgroundMesh;
-	inline static ResourceHandle< Material > BackgroundMaterial;
-	inline static ResourceHandle< Texture2D > BackgroundTexture;
 
-	inline static ResourceHandle< Material > MenuItem1Material;
-	inline static ResourceHandle< Texture2D > MenuItem1Texture;
+	MakeMatPairDec( menu_background );
+	MakeMatPairDec( play_button_active );
+	MakeMatPairDec( play_button );
+	MakeMatPairDec( instruction_button_active );
+	MakeMatPairDec( instruction_button );
 };
