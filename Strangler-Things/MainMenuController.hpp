@@ -57,17 +57,17 @@ public:
 		Renderer1->SetMaterial( play_button_active_material );
 		Renderer1->SetMesh( BackgroundMesh );
 		auto* MenuTransform1 = MenuItem1.GetTransform();
-		MenuTransform1->SetGlobalPosition( Vector3::Up * 0.5f );
+		MenuTransform1->SetGlobalPosition( Vector3::Up * 0.5f + Vector3::Backward * -0.31f );
 		MenuTransform1->SetGlobalScale( Vector3( 0.32f, 1.0f, -0.11f ) );
 
 		// Instruction button
-		GameObject MenuItem2 = GameObject::Instantiate( MenuObj );
+		/*GameObject MenuItem2 = GameObject::Instantiate( MenuObj );
 		MeshRenderer* Renderer2 = MenuItem2.AddComponent< MeshRenderer >();
-		Renderer2->SetMaterial( instruction_button_material );
+		Renderer2->SetMaterial( instruction_button_active_material );
 		Renderer2->SetMesh( BackgroundMesh );
 		auto* MenuTransform2 = MenuItem2.GetTransform();
 		MenuTransform2->SetGlobalPosition( Vector3::Up * 0.5f + Vector3::Backward * -0.35f );
-		MenuTransform2->SetGlobalScale( Vector3( 0.32f, 1.0f, -0.11f ) );
+		MenuTransform2->SetGlobalScale( Vector3( 0.32f, 1.0f, -0.11f ) );*/
 	}
 
 	void Tick( float a_Progress )
