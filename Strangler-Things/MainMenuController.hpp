@@ -18,7 +18,7 @@ if ( !##Name##_texture.IsLoaded() ) \
 			Material BackgroundMat;\
 			BackgroundMat.SetName( "BackgroundMaterial"_N );\
 			BackgroundMat.AddTexture( "texture_diffuse"_N, ##Name##_texture );\
-			BackgroundMat.SetShader( Shader::Spotlight );\
+			BackgroundMat.SetShader( Shader::Diffuse );\
 			##Name##_material = BackgroundMat;\
 		}\
 
