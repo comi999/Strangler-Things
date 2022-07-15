@@ -57,10 +57,6 @@ public:
 		MenuTransform->SetGlobalPosition( Vector3::Backward * 3.0f );
 		MenuTransform->SetGlobalScale( Vector3( -11.0f, 1.0f, -8.0f ) );
 
-		auto* CamTransform = Camera::GetMainCamera()->GetOwner()->GetTransform();
-		CamTransform->SetLocalPosition( Vector3::Up );
-		CamTransform->SetGlobalRotation( Vector3::Right * Math::Radians( -90.0f ) );
-
 		GameObject MenuItem1 = GameObject::Instantiate( MenuObj );
 		MeshRenderer* Renderer1 = MenuItem1.AddComponent< MeshRenderer >();
 		Renderer1->SetMaterial( BackgroundMaterial );

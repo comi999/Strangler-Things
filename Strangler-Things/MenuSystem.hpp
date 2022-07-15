@@ -1,11 +1,24 @@
 #pragma once
 
+#include "Input.hpp"
+
+#include "GameplaySystem.hpp"
 #include "SplashScreenController.hpp"
 #include "MainMenuController.hpp"
 
 class MenuSystem
 {
 public:
+
+	static MenuSystem& I()
+	{
+		if ( s_I == nullptr )
+		{
+			s_I = new MenuSystem;
+		}
+
+		return *s_I;
+	}
 
 	MenuSystem()
 	{
@@ -15,7 +28,8 @@ public:
 	void Update()
 	{
 		static float Progress = 0.0f;
-		//if ( !Active ) return;
+
+		if ( !Active ) return;
 
 		if ( Reset )
 		{
@@ -59,14 +73,23 @@ public:
 			MenuController = MenuObject.AddComponent< MainMenuController >();
 			MenuController->Init( MenuObject );
 		}
+
+		if (
+			Input::IsKeyDown( KeyCode::Space ) ||
+			Input::IsKeyDown( KeyCode::Enter )
+		)
+		{
+			GameplaySystem::StartLevel(
+				GameplaySystem::GetOrderedLevels().front()
+			);
+		}
 	}
 
 	bool Active = false;
 	bool Reset = false;
 
 private:
+	inline static MenuSystem* s_I = nullptr;
 
 	GameObject MenuObject;
 };
-
-static MenuSystem _MS;

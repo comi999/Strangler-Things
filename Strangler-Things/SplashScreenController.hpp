@@ -49,11 +49,6 @@ public:
 		MenuTransform->SetGlobalPosition( Vector3::Backward * 3.5f );
 		//MenuTransform->SetGlobalScale( Vector3::One * 10.0f );
 		MenuTransform->SetLocalScale( Vector3( -11.0f, 1.0f, -6.5f ) );
-
-
-		auto* CamTransform = Camera::GetMainCamera()->GetOwner()->GetTransform();
-		CamTransform->SetLocalPosition( Vector3::Up * 5.0f );
-		CamTransform->SetLocalRotation( Vector3::Right * Math::Radians( -90.0f ) );
 	}
 
 	void TickSplash( float a_Progress )

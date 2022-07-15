@@ -12,7 +12,7 @@
 enum class LevelObject : uint8_t
 {
 	ABYSS           = '.',
-	FLOOR           = ' ',
+	FLOOR           = ',',
 	HIGH_WALL       = '#',
 	LOW_WALL        = '-',
 	HORIZONTAL_EXIT = '_',

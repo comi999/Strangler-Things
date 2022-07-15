@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "Atlas.hpp"
+#include "BonusSystem.hpp"
 #include "GeneratorSystem.hpp"
 #include "LateGameplayUpdateSystem.hpp"
 #include "LevelCompletionSystem.hpp"
@@ -31,6 +31,7 @@ private:
 	inline static GameplaySystem* s_I;
 	static std::vector< Hash > s_OrderedLevels;
 
+	BonusSystem m_BonusSystem;
 	GeneratorSystem m_GeneratorSystem;
 	LateGameplayUpdateSystem m_LateGameplayUpdateSystem;
 	LevelCompletionSystem m_LevelCompletionSystem;

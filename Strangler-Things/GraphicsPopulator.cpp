@@ -13,11 +13,13 @@
 #include "OnFullyFueledChangedComponent.hpp"
 #include "MenuSystem.hpp"
 
+
 void GraphicsPopulator::Scene( GameObject a_Object, Hash a_LevelName )
 {
-	if ( a_LevelName == "Menu"_H )
+	MenuSystem::I().Active = a_LevelName == "Menu"_H;
+
+	if ( MenuSystem::I().Active )
 	{
-		_MS.Active = true;
 		return;
 	}
 
@@ -25,7 +27,7 @@ void GraphicsPopulator::Scene( GameObject a_Object, Hash a_LevelName )
 	GameObject SunObject = GameObject::Instantiate( "Sun"_N, a_Object );
 	Light* SunComponent = SunObject.AddComponent< Light >();
 	SunComponent->SetDirection( Math::Normalize( Vector3::Down + Vector3::Right + Vector3::Forward * 0.3f ) );
-	SunComponent->SetAmbient( Vector3( 1.0f, 0.3f, 0.3f ) );
+	SunComponent->SetAmbient( Vector3::One );
 	Light::SetSun( SunComponent );
 
 	SunObject.AddComponent< OnLateGameplayUpdateComponent >()->Init( [=]()
@@ -39,9 +41,11 @@ void GraphicsPopulator::Scene( GameObject a_Object, Hash a_LevelName )
 	{
 		Material Temp = Material::LitFlatColour;
 		Temp.SetName( "FloorMaterial"_N );
-		//Temp.AddTexture( "texture_diffuse"_N, Resource::Load< Texture2D >( "floor"_H ) );
-		Temp.SetProperty( "diffuse_colour"_H, Vector4( 0.2f, 0.1f, 0.4f, 1.0f ) );
-		Temp.SetShader( Shader::LitFlatColour );
+		Temp.AddTexture( "texture_diffuse"_N, Resource::Load< Texture2D >( "floor"_H ) );
+		Temp.SetShader( Shader::Diffuse );
+		//Temp.SetProperty( "diffuse_colour"_H, Vector4( 0.2f, 0.1f, 0.4f, 1.0f ) );
+		//Temp.SetShader( Shader::LitFlatColour );
+
 		return Temp;
 	}( );
 
@@ -76,7 +80,6 @@ void GraphicsPopulator::Scene( GameObject a_Object, Hash a_LevelName )
 void GraphicsPopulator::Abyss( GameObject a_Object ) { GraphicsPopulatorBase::Abyss( a_Object ); };
 void GraphicsPopulator::Floor( GameObject a_Object ) { GraphicsPopulatorBase::Floor( a_Object ); };
 void GraphicsPopulator::TentacleNode_( GameObject a_Object, TentacleNode* a_TentacleNode ) { GraphicsPopulatorBase::TentacleNode_( a_Object, a_TentacleNode ); };
-void GraphicsPopulator::Random( GameObject a_Object ) { GraphicsPopulatorBase::Random( a_Object ); };
 void GraphicsPopulator::Bonus( GameObject a_Object ) { GraphicsPopulatorBase::Bonus( a_Object ); };
 void GraphicsPopulator::RandomBlocker( GameObject a_Object ) { GraphicsPopulatorBase::RandomBlocker( a_Object ); };
 
@@ -293,8 +296,8 @@ void GraphicsPopulator::Fuel( GameObject a_Object )
 	{
 		Material Temp;
 		Temp.SetName( "FuelMaterial"_N );
-		Temp.AddProperty( "diffuse_colour"_N, ( Vector4 )Colour::LIGHT_BLUE );
-		Temp.SetShader( Shader::LitFlatColour );
+		Temp.AddTexture( "texture_diffuse"_N, Resource::Load< Texture2D >( "fuel_material0_texture_diffuse"_H ) );
+		Temp.SetShader( Shader::Diffuse );
 		return Temp;
 	}( );
 
@@ -330,8 +333,6 @@ void GraphicsPopulator::Generator( GameObject a_Object )
 	//FuelTransform->SetLocalScale( Vector3::One * 0.3f );
 
 	ResourceHandle< Mesh > GeneratorMesh = Resource::Load< Mesh >( "generator_mesh1"_H );
-	//ResourceHandle< Material > GeneratorMaterial = Resource::Load< Material >( "generator_material"_H );
-	ResourceHandle< Texture2D > GeneratorTexture = Resource::Load< Texture2D >( "generator_material0_texture_diffuse"_H );
 
 	GameObject NewGenerator = GameObject::Instantiate( a_Object );
 	auto* NewGeneratorTransform = NewGenerator.GetTransform();
@@ -339,7 +340,9 @@ void GraphicsPopulator::Generator( GameObject a_Object )
 	NewMeshRenderer->SetMaterial( GeneratorMaterial );
 	NewMeshRenderer->SetMesh( GeneratorMesh );
 	NewGeneratorTransform->SetParent( a_Object, false );
-	NewGeneratorTransform->SetLocalRotation( Quaternion::ToQuaternion( Vector3::Up * Math::Radians( 0.0f ) ) );
+	NewGeneratorTransform->SetLocalRotation( Quaternion::ToQuaternion( Vector3::Up * Math::Radians( -90.0f ) ) );
+	NewGeneratorTransform->SetLocalScale( Vector3( 0.5f ) );
+	NewGeneratorTransform->SetLocalPosition( Vector3( 0.5f, 0.0f, -0.5f ) );
 
 };
 

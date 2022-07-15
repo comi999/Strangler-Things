@@ -3,18 +3,13 @@
 
 #include "GraphicsPopulatorBase.hpp"
 #include "OnFullyFueledChangedComponent.hpp"
+#include "OnLateGameplayUpdateComponent.hpp"
 #include "TentacleComponent.hpp"
 
 
 void GraphicsPopulatorBase::Scene( GameObject a_Object, Hash a_LevelName ) { };
 void GraphicsPopulatorBase::Abyss( GameObject a_Object ) { };
-void GraphicsPopulatorBase::Floor( GameObject a_Object )
-{
-	
-
-
-	
-};
+void GraphicsPopulatorBase::Floor( GameObject a_Object ) { };
 void GraphicsPopulatorBase::HighWall( GameObject a_Object )
 {
 	static ResourceHandle< Material > HighWallMaterial = []()
@@ -137,34 +132,15 @@ void GraphicsPopulatorBase::Player( GameObject a_Object )
 	Transform* NewTransform = NewPlayer.GetTransform();
 	NewTransform->SetParent( a_Object, false );
 };
-void GraphicsPopulatorBase::TentacleStart( GameObject a_Object )
-{
-	static ResourceHandle< Material > TentacleMaterial = []()
-	{
-		Material Temp = Material::LitFlatColour;
-		Temp.SetName( "TentacleMaterial"_N );
-		Temp.SetProperty( "diffuse_colour"_H, ( Vector4 )Colour::RED );
-		Temp.SetShader( Shader::LitFlatColour );
-		return Temp;
-	}();
-
-	Prefab* Cube = Resource::Load< Prefab >( "cylinder"_H ).Assure();
-	GameObject NewTentacle = Prefab::Instantiate( *Cube );
-	MeshRenderer* NewRenderer = NewTentacle.GetComponentInChild< MeshRenderer >();
-	NewRenderer->SetMaterial( TentacleMaterial );
-
-	Transform* NewTransform = NewTentacle.GetTransform();
-	NewTransform->SetParent( a_Object, false );
-	NewTransform->SetLocalScaleY( 0.5f );
-};
+void GraphicsPopulatorBase::TentacleStart( GameObject a_Object ) { };
 void GraphicsPopulatorBase::TentacleNode_( GameObject a_Object, TentacleNode* a_TentacleNode )
 {
 	static ResourceHandle< Material > TentacleMaterial = []()
 	{
-		Material Temp = Material::LitFlatColour;
+		Material Temp = Material::UnlitFlatColour;
 		Temp.SetName( "TentacleMaterial"_N );
-		Temp.SetProperty( "diffuse_colour"_H, ( Vector4 )Colour::RED );
-		Temp.SetShader( Shader::LitFlatColour );
+		Temp.SetProperty( "diffuse_colour"_H, ( Vector4 )Colour( 3, 65, 55, 255 ) );
+		Temp.SetShader( Shader::UnlitFlatColour );
 		return Temp;
 	}();
 
@@ -183,7 +159,6 @@ void GraphicsPopulatorBase::TentacleNode_( GameObject a_Object, TentacleNode* a_
 	Quaternion Q = Quaternion::ToQuaternion( Rot, Order );
 	NewTransform->SetGlobalRotation( Q );
 };
-void GraphicsPopulatorBase::Random( GameObject a_Object ) { };
 void GraphicsPopulatorBase::Fuel( GameObject a_Object )
 {
 	static ResourceHandle< Material > FuelMaterial = []()
@@ -224,5 +199,33 @@ void GraphicsPopulatorBase::Generator( GameObject a_Object )
 	NewTransform->SetParent( a_Object, false );
 	NewTransform->SetLocalScale( Vector3( 0.33f, 3.0f, 0.33f ) );
 };
-void GraphicsPopulatorBase::Bonus( GameObject a_Object ) { };
+void GraphicsPopulatorBase::Bonus( GameObject a_Object )
+{
+	static ResourceHandle< Material > BonusMaterial = []()
+	{
+		Material Temp = Material::UnlitFlatColour;
+		Temp.SetName( "BonusMaterial"_N );
+		Temp.SetProperty( "diffuse_colour"_H, ( Vector4 )Colour::LIGHT_YELLOW );
+		Temp.SetShader( Shader::UnlitFlatColour );
+		return Temp;
+	}();
+
+	Prefab* Cube = Resource::Load< Prefab >( "cube"_H ).Assure();
+	GameObject NewBonus = Prefab::Instantiate( *Cube );
+	MeshRenderer* NewRenderer = NewBonus.GetComponentInChild< MeshRenderer >();
+	NewRenderer->SetMaterial( BonusMaterial );
+
+	Transform* NewTransform = NewBonus.GetTransform();
+	NewTransform->SetParent( a_Object, false );
+	NewTransform->SetLocalScale( Vector3( 0.5f, 0.5f, 0.5f ) );
+	NewTransform->SetLocalPositionY( 0.75f );
+
+	NewBonus.AddComponent< OnLateGameplayUpdateComponent >( )
+		->Init([=]()
+		{
+			static Quaternion Rotator = Quaternion::ToQuaternion( Vector3( 0.1f, 0.1f, 0.1f ) );
+			// TODO: Why does this lock up on global, or grow and crash on local?
+			( (GameObject)NewBonus ).GetTransform()->RotateGlobal( Rotator );
+		});
+};
 void GraphicsPopulatorBase::RandomBlocker( GameObject a_Object ) { };

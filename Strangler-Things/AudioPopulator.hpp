@@ -92,11 +92,13 @@ public:
 		audioSource->LoadSfx(sound);
 		audioSource->SetRolloffFactor(0.1f);
 
-		a_Object.GetComponent< GeneratorComponent >()
-			->OnConsumedFuel += [=]()
+		for ( auto& Generator : a_Object.GetComponentsInChildren< GeneratorComponent >() )
+		{
+			Generator->OnConsumedFuel += [=]()
 			{
 				((GameObject)audioSourceObj).GetComponent< AudioSource >()->Play();
 			};
+		}
 	};
 	void Bonus( GameObject a_Object ) { };
 

@@ -20,5 +20,8 @@ private:
 	Vector2 m_CameraRotation;
 	GameObject m_Target;
 	Vector3 m_TargetPoint;
+	bool m_IsOnMenu;
+
+	void UpdateIsOnMenu( bool );
 
 };

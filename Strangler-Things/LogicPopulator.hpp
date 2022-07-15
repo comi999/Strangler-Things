@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Atlas.hpp"
+#include "BonusComponent.hpp"
 #include "CameraSystem.hpp"
 #include "ExitComponent.hpp"
 #include "GameplaySystem.hpp"
@@ -48,7 +49,6 @@ public:
 		a_Object.AddComponent< TentacleComponent >()->Init();
 		AddCollision( a_Object );
 	};
-	void Random( GameObject a_Object ) { };
 	void Fuel( GameObject a_Object )
 	{
 		a_Object.AddComponent< PickUpAbleComponent >();
@@ -56,9 +56,17 @@ public:
 	};
 	void Generator( GameObject a_Object )
 	{
-		a_Object.AddComponent< GeneratorComponent >();
+		auto LeftPart = GameObject::Instantiate( a_Object );
+		LeftPart.AddComponent< GeneratorComponent >();
+
+		auto RightPart = GameObject::Instantiate( a_Object );
+		RightPart.GetTransform()->SetLocalPositionX( 1.0f );
+		RightPart.AddComponent< GeneratorComponent >();
 	};
-	void Bonus( GameObject a_Object ) { };
+	void Bonus( GameObject a_Object )
+	{
+		a_Object.AddComponent< BonusComponent >();
+	};
 	void RandomBlocker( GameObject a_Object ) { };
 	void HighWall( GameObject a_Object )
 	{

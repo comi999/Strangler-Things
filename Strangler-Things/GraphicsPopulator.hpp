@@ -17,7 +17,6 @@ public:
 	void Player( GameObject a_Object ) override;
 	void TentacleStart( GameObject a_Object ) override;
 	void TentacleNode_( GameObject a_Object, TentacleNode* a_TentacleNode ) override;
-	void Random( GameObject a_Object ) override;
 	void Fuel( GameObject a_Object ) override;
 	void Generator( GameObject a_Object ) override;
 	void Bonus( GameObject a_Object ) override;

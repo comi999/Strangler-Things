@@ -10,7 +10,8 @@ std::vector< Hash > GameplaySystem::s_OrderedLevels
 {
 	"Level1"_H,
 	"Level2"_H,
-	"Level3"_H
+	"Level3"_H,
+	"Level4"_H
 };
 
 void GameplaySystem::StartLevel( Hash a_LevelName )
@@ -62,6 +63,7 @@ void GameplaySystem::Update()
 	m_PlayerMovementSystem.Update();
 	m_GeneratorSystem.Update();
 	m_PickUpSystem.Update();
+	m_BonusSystem.Update();
 	m_TentacleGrowthSystem.Update();
 	m_LateGameplayUpdateSystem.Update();
 	m_LevelCompletionSystem.Update();
